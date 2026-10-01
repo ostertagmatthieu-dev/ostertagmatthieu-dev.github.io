@@ -1,0 +1,24 @@
+# Matthieu Ostertag
+
+> Personal homepage of Matthieu Ostertag, engineering student at Mines Nancy (Université de Lorraine), specialising in Industrial and Materials Engineering (GIM). He works on world models for industrial machines: latent dynamics models that predict how a process evolves under candidate commands, and whether that knowledge transfers to a machine the model has never seen. From 2027 he joins École nationale des ponts et chaussées (ENPC, Institut Polytechnique de Paris) through the "Talents" track (formation complémentaire intégrée), in the Department of Applied Mathematics and Computer Science (IMI).
+
+The page exists in English (default), French (`?lang=fr`) and German (`?lang=de`).
+
+## Research
+
+- [World Models for Cross-Machine CNC Transfer under Partial Sensor Overlap](https://ostertagmatthieu-dev.github.io/saac-jepa/): A. L. Bouaziz, M. Ostertag, A. Demasles, arXiv:2609.16071, 2026. A command-conditioned JEPA world model trained on a CNC machine with 17 sensors, locked on source data, and evaluated once, zero-shot, on a machine that shares only 10 of them. Project page with its own [llms.txt](https://ostertagmatthieu-dev.github.io/saac-jepa/llms.txt).
+- [Code](https://github.com/ostertagmatthieu-dev/saac-jepa) · [arXiv](https://arxiv.org/abs/2609.16071) · [Demo](https://huggingface.co/spaces/mostertag/saac-jepa-world-model)
+
+## Community
+
+- [Hack the World(s)](https://hacktheworlds.fr/en/index.html): 24-hour hackathon on world models and JEPA architectures, June 19–20, 2026, Paris School of AI (PSL) and ESIEE Paris; 100 students in 25 teams; organized with ESIEE Paris, Mines Nancy/ACADI and PR[AI]RIE. Matthieu Ostertag is co-initiator and member of the steering committee.
+
+## Profiles
+
+- [Google Scholar](https://scholar.google.com/citations?user=CJ8z4rwAAAAJ)
+- [OpenReview](https://openreview.net/profile?id=~Matthieu_Ostertag1)
+- [ORCID](https://orcid.org/0009-0002-3829-0536)
+- [GitHub](https://github.com/ostertagmatthieu-dev)
+- [Hugging Face](https://huggingface.co/mostertag)
+- [alphaXiv](https://www.alphaxiv.org/@matthieu-ostertag)
+- [LinkedIn](https://www.linkedin.com/in/matthieu-ostertag/)

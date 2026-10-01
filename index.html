@@ -10,6 +10,8 @@
 <meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <meta name="google-site-verification" content="F1VABGIbDV20T39u4Xei3S14fDGY10jc1vO_dndObAw">
+<link rel="preload" href="fonts/heros-web-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/heros-web-bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -19,12 +21,28 @@
 <link rel="alternate" hreflang="de" href="https://ostertagmatthieu-dev.github.io/?lang=de">
 <link rel="alternate" hreflang="x-default" href="https://ostertagmatthieu-dev.github.io/">
 
+<link rel="manifest" href="site.webmanifest">
+
 <meta property="og:type" content="profile">
+<meta property="og:site_name" content="Matthieu Ostertag">
 <meta property="og:title" content="Matthieu Ostertag">
 <meta property="og:description" content="World models for industrial machines: command-conditioned latent dynamics and cross-machine transfer.">
 <meta property="og:url" content="https://ostertagmatthieu-dev.github.io/">
-<meta property="og:image" content="https://ostertagmatthieu-dev.github.io/saac-jepa/og.png">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:image" content="https://ostertagmatthieu-dev.github.io/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Matthieu Ostertag — World models for industrial machines. Mines Nancy, Université de Lorraine; École nationale des ponts et chaussées from 2027.">
+<meta property="profile:first_name" content="Matthieu">
+<meta property="profile:last_name" content="Ostertag">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Matthieu Ostertag">
+<meta name="twitter:description" content="World models for industrial machines: command-conditioned latent dynamics and cross-machine transfer.">
+<meta name="twitter:image" content="https://ostertagmatthieu-dev.github.io/og.jpg">
+<meta name="twitter:image:alt" content="Matthieu Ostertag — World models for industrial machines.">
 
 <link rel="me" href="https://github.com/ostertagmatthieu-dev">
 <link rel="me" href="https://orcid.org/0009-0002-3829-0536">
@@ -34,41 +52,75 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Matthieu Ostertag",
-  "url": "https://ostertagmatthieu-dev.github.io/",
-  "image": "https://ostertagmatthieu-dev.github.io/photo.jpg",
-  "affiliation": {"@type": "CollegeOrUniversity", "name": "Mines Nancy, Université de Lorraine"},
-  "knowsLanguage": ["fr", "en", "de"],
-  "knowsAbout": ["world models", "JEPA", "latent dynamics", "transfer learning", "industrial machine learning", "CNC machining"],
-  "sameAs": [
-    "https://scholar.google.com/citations?user=CJ8z4rwAAAAJ",
-    "https://orcid.org/0009-0002-3829-0536",
-    "https://openreview.net/profile?id=~Matthieu_Ostertag1",
-    "https://github.com/ostertagmatthieu-dev",
-    "https://huggingface.co/mostertag",
-    "https://www.alphaxiv.org/@matthieu-ostertag",
-    "https://www.linkedin.com/in/matthieu-ostertag/"
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://ostertagmatthieu-dev.github.io/#person",
+      "name": "Matthieu Ostertag",
+      "givenName": "Matthieu",
+      "familyName": "Ostertag",
+      "url": "https://ostertagmatthieu-dev.github.io/",
+      "image": "https://ostertagmatthieu-dev.github.io/photo.jpg",
+      "description": "Engineering student at Mines Nancy working on world models for industrial machines.",
+      "affiliation": [
+        {"@type": "CollegeOrUniversity", "name": "Mines Nancy", "url": "https://mines-nancy.univ-lorraine.fr/"},
+        {"@type": "CollegeOrUniversity", "name": "Université de Lorraine", "url": "https://www.univ-lorraine.fr/"}
+      ],
+      "knowsLanguage": ["fr", "en", "de"],
+      "knowsAbout": ["world models", "JEPA", "latent dynamics", "transfer learning", "industrial machine learning", "CNC machining"],
+      "sameAs": [
+        "https://scholar.google.com/citations?user=CJ8z4rwAAAAJ",
+        "https://orcid.org/0009-0002-3829-0536",
+        "https://openreview.net/profile?id=~Matthieu_Ostertag1",
+        "https://github.com/ostertagmatthieu-dev",
+        "https://huggingface.co/mostertag",
+        "https://www.alphaxiv.org/@matthieu-ostertag",
+        "https://www.linkedin.com/in/matthieu-ostertag/"
+      ]
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://ostertagmatthieu-dev.github.io/#page",
+      "url": "https://ostertagmatthieu-dev.github.io/",
+      "name": "Matthieu Ostertag",
+      "inLanguage": "en",
+      "dateModified": "2026-10-02",
+      "mainEntity": {"@id": "https://ostertagmatthieu-dev.github.io/#person"}
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "headline": "World Models for Cross-Machine CNC Transfer under Partial Sensor Overlap",
+      "url": "https://arxiv.org/abs/2609.16071",
+      "sameAs": "https://doi.org/10.48550/arXiv.2609.16071",
+      "datePublished": "2026-09-13",
+      "author": [
+        {"@type": "Person", "name": "Ayoub Louaye Bouaziz"},
+        {"@id": "https://ostertagmatthieu-dev.github.io/#person"},
+        {"@type": "Person", "name": "Anton Demasles"}
+      ]
+    }
   ]
 }
 </script>
 
 <style>
-  /* Helvetica when the system has it (macOS, iOS); otherwise TeX Gyre Heros,
+  /* font-display: optional never swaps a font in after first paint, so the text
+     cannot jump (CLS); the preloads below make Heros arrive within that window.
+     Helvetica when the system has it (macOS, iOS); otherwise TeX Gyre Heros,
      LaTeX's Helvetica clone, self-hosted in fonts/. local() matches real
      installed faces only, so Windows never silently swaps in Arial. */
   @font-face {
-    font-family: "Site Sans"; font-style: normal; font-weight: 400; font-display: swap;
+    font-family: "Site Sans"; font-style: normal; font-weight: 400; font-display: optional;
     src: local("Helvetica Neue"), local("HelveticaNeue"), local("Helvetica"),
          url("fonts/heros-web-regular.woff2") format("woff2");
   }
   @font-face {
-    font-family: "Site Sans"; font-style: normal; font-weight: 700; font-display: swap;
+    font-family: "Site Sans"; font-style: normal; font-weight: 700; font-display: optional;
     src: local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"), local("Helvetica Bold"), local("Helvetica-Bold"),
          url("fonts/heros-web-bold.woff2") format("woff2");
   }
   @font-face {
-    font-family: "Site Sans"; font-style: italic; font-weight: 400; font-display: swap;
+    font-family: "Site Sans"; font-style: italic; font-weight: 400; font-display: optional;
     src: local("Helvetica Neue Italic"), local("HelveticaNeue-Italic"), local("Helvetica Oblique"), local("Helvetica-Oblique"),
          url("fonts/heros-web-italic.woff2") format("woff2");
   }
@@ -102,9 +154,14 @@
   }
 
   a { color: var(--link); text-decoration: none; }
+  /* Links inside sentences must not rely on colour alone (WCAG 1.4.1). */
+  main p a, .item .title a {
+    text-decoration: underline; text-decoration-thickness: 1px;
+    text-underline-offset: 2px; text-decoration-color: rgba(26, 13, 171, 0.35);
+  }
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
   @media (hover: hover) {
-    a:hover, summary:hover { text-decoration: underline; text-underline-offset: 2px; }
+    a:hover, summary:hover { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: currentColor; }
   }
 
   /* Language switcher */
@@ -213,6 +270,16 @@
     .hs.is-on .hs__pulse, .hs.is-on .hs__emit, .hs.is-on .hs__bars rect, .hs.is-on .hs__packet { animation-play-state: paused; }
   }
 
+  /* ------------------------------- Print ------------------------------- */
+  @media print {
+    .lang, .fig, .figcap, .sep, details { display: none !important; }
+    body { font-size: 11pt; }
+    a { color: #000; text-decoration: none; }
+    main p a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #555; overflow-wrap: anywhere; }
+    .paper, .item { break-inside: avoid; }
+    .portrait { width: 96px; height: 96px; }
+  }
+
   /* ------------------------------- Touch ------------------------------- */
   /* Fingers need ~44 px targets (Apple HIG, WCAG 2.5.5). Inline links inside
      sentences are exempt; the link rows and the switcher are not. */
@@ -281,7 +348,7 @@
         <a href="https://www.linkedin.com/in/matthieu-ostertag/">LinkedIn</a>
       </div>
     </div>
-    <div class="portrait" aria-hidden="true">MO<img src="photo.jpg" alt="" width="160" height="160" decoding="async" onerror="this.remove()"></div>
+    <div class="portrait" aria-hidden="true">MO<picture><source srcset="photo.webp" type="image/webp"><img src="photo.jpg" alt="" width="160" height="160" decoding="async" onerror="this.remove()"></picture></div>
   </header>
 
   <section aria-labelledby="research">
@@ -292,7 +359,7 @@
     </p>
 
     <article class="paper">
-      <a class="fig" href="https://ostertagmatthieu-dev.github.io/saac-jepa/" aria-label="Project page" data-i18n-aria="aProject">
+      <a class="fig" href="https://ostertagmatthieu-dev.github.io/saac-jepa/" aria-hidden="true" tabindex="-1">
         <svg class="hs" viewBox="12 22 1056 230" aria-hidden="true" focusable="false">
           <defs>
             <pattern id="hs-srcPat" patternUnits="userSpaceOnUse" x="16" y="0" width="404" height="268"><g id="hs-srcFlow"></g></pattern>
@@ -540,20 +607,22 @@
     function stepPath(y, amp, seed, segs) {
       var r = rng(seed), lv = [];
       for (var i = 0; i < segs; i++) lv.push((Math.round(r() * 3) / 3) * 2 - 1);
-      var d = "M0 " + (y + lv[0] * amp).toFixed(2);
+      var d = "M0 " + (y + lv[0] * amp).toFixed(2), len = W;
       for (var k = 0; k < segs; k++) {
         var x = ((k + 1) * W) / segs;
         d += "L" + x.toFixed(1) + " " + (y + lv[k] * amp).toFixed(2);
         d += "L" + x.toFixed(1) + " " + (y + lv[(k + 1) % segs] * amp).toFixed(2);
+        len += Math.abs(lv[(k + 1) % segs] - lv[k]) * amp;
       }
-      return d;
+      return { d: d, len: len };
     }
 
     var geom = [];
     for (var i = 0; i < LANES; i++) {
       var y = TOP + i * pitch, isAct = !!ACT[i];
+      var sp = isAct ? stepPath(y, 2.8, 900 + i, 7) : null;
       geom.push({ y: y, isAct: isAct, absent: !isAct && !!ABSENT[i],
-                  d: isAct ? stepPath(y, 2.8, 900 + i, 7) : tracePath(y, 3.0, 100 + i) });
+                  d: isAct ? sp.d : tracePath(y, 3.0, 100 + i), len: isAct ? sp.len : 0 });
     }
     function paint(group, keep) {
       if (!group) return;
@@ -561,11 +630,10 @@
         if (!keep(g)) return;
         var p = el("path", { "class": "hs__trace" + (g.isAct ? " hs__trace--act" : ""), d: g.d }, group);
         if (g.isAct) {
-          /* match the dash period to the lane length so dashes line up across tile seams */
-          try {
-            var L = p.getTotalLength(), n = Math.max(1, Math.round(L / 9));
-            p.style.strokeDasharray = ((L / n) * (2 / 3)).toFixed(3) + " " + ((L / n) / 3).toFixed(3);
-          } catch (e) {}
+          /* match the dash period to the lane length so dashes line up across tile
+             seams; the length is computed, not measured, so no layout is forced */
+          var L = g.len, n = Math.max(1, Math.round(L / 9));
+          p.style.strokeDasharray = ((L / n) * (2 / 3)).toFixed(3) + " " + ((L / n) / 3).toFixed(3);
         }
       });
     }

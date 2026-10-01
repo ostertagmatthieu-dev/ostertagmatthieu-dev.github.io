@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://ostertagmatthieu-dev.github.io/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ostertagmatthieu-dev.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ostertagmatthieu-dev.github.io/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ostertagmatthieu-dev.github.io/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ostertagmatthieu-dev.github.io/"/>
+  </url>
+  <url>
+    <loc>https://ostertagmatthieu-dev.github.io/?lang=fr</loc>
+    <lastmod>2026-10-02</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ostertagmatthieu-dev.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ostertagmatthieu-dev.github.io/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ostertagmatthieu-dev.github.io/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ostertagmatthieu-dev.github.io/"/>
+  </url>
+  <url>
+    <loc>https://ostertagmatthieu-dev.github.io/?lang=de</loc>
+    <lastmod>2026-10-02</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ostertagmatthieu-dev.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ostertagmatthieu-dev.github.io/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ostertagmatthieu-dev.github.io/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ostertagmatthieu-dev.github.io/"/>
+  </url>
+</urlset>

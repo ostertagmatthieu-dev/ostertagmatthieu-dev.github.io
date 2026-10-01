@@ -1,0 +1,7 @@
+# Search engines and AI crawlers are welcome on the whole host,
+# including the SAAC-JEPA project page at /saac-jepa/.
+User-agent: *
+Allow: /
+
+Sitemap: https://ostertagmatthieu-dev.github.io/sitemap.xml
+Sitemap: https://ostertagmatthieu-dev.github.io/saac-jepa/sitemap.xml
