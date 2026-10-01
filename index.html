@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Matthieu Ostertag</title>
+<meta name="description" content="Matthieu Ostertag — engineering student at Mines Nancy working on world models for industrial machines: command-conditioned latent dynamics and cross-machine transfer.">
+<meta name="author" content="Matthieu Ostertag">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="https://ostertagmatthieu-dev.github.io/">
+<link rel="alternate" hreflang="en" href="https://ostertagmatthieu-dev.github.io/">
+<link rel="alternate" hreflang="fr" href="https://ostertagmatthieu-dev.github.io/?lang=fr">
+<link rel="alternate" hreflang="de" href="https://ostertagmatthieu-dev.github.io/?lang=de">
+<link rel="alternate" hreflang="x-default" href="https://ostertagmatthieu-dev.github.io/">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Matthieu Ostertag">
+<meta property="og:description" content="World models for industrial machines: command-conditioned latent dynamics and cross-machine transfer.">
+<meta property="og:url" content="https://ostertagmatthieu-dev.github.io/">
+<meta property="og:image" content="https://ostertagmatthieu-dev.github.io/saac-jepa/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="me" href="https://github.com/ostertagmatthieu-dev">
+<link rel="me" href="https://orcid.org/0009-0002-3829-0536">
+
+<!-- Eviv Bulgroz ! Zorglangue : ?lang=zorg, ou tapez « zorglub » sur la page. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Matthieu Ostertag",
+  "url": "https://ostertagmatthieu-dev.github.io/",
+  "image": "https://ostertagmatthieu-dev.github.io/photo.jpg",
+  "affiliation": {"@type": "CollegeOrUniversity", "name": "Mines Nancy, Université de Lorraine"},
+  "knowsLanguage": ["fr", "en", "de"],
+  "knowsAbout": ["world models", "JEPA", "latent dynamics", "transfer learning", "industrial machine learning", "CNC machining"],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=CJ8z4rwAAAAJ",
+    "https://orcid.org/0009-0002-3829-0536",
+    "https://openreview.net/profile?id=~Matthieu_Ostertag1",
+    "https://github.com/ostertagmatthieu-dev",
+    "https://huggingface.co/mostertag",
+    "https://www.alphaxiv.org/@matthieu-ostertag",
+    "https://www.linkedin.com/in/matthieu-ostertag/"
+  ]
+}
+</script>
+
+<style>
+  /* Helvetica when the system has it (macOS, iOS); otherwise TeX Gyre Heros,
+     LaTeX's Helvetica clone, self-hosted in fonts/. local() matches real
+     installed faces only, so Windows never silently swaps in Arial. */
+  @font-face {
+    font-family: "Site Sans"; font-style: normal; font-weight: 400; font-display: swap;
+    src: local("Helvetica Neue"), local("HelveticaNeue"), local("Helvetica"),
+         url("fonts/heros-web-regular.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Site Sans"; font-style: normal; font-weight: 700; font-display: swap;
+    src: local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"), local("Helvetica Bold"), local("Helvetica-Bold"),
+         url("fonts/heros-web-bold.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Site Sans"; font-style: italic; font-weight: 400; font-display: swap;
+    src: local("Helvetica Neue Italic"), local("HelveticaNeue-Italic"), local("Helvetica Oblique"), local("Helvetica-Oblique"),
+         url("fonts/heros-web-italic.woff2") format("woff2");
+  }
+
+  :root {
+    --text: #1a1a1a;
+    --muted: #595959;
+    --rule: #e3e3e3;
+    --link: #1a0dab;
+    --code-bg: #f6f6f6;
+    --sans: "Site Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --gutter: 24px;
+    --tap: 44px;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--text);
+    font: 16px/1.6 var(--sans);
+    overflow-wrap: break-word;
+    -webkit-tap-highlight-color: rgba(26, 13, 171, 0.12);
+  }
+
+  .wrap {
+    max-width: 820px; margin: 0 auto;
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+  }
+
+  a { color: var(--link); text-decoration: none; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
+  @media (hover: hover) {
+    a:hover, summary:hover { text-decoration: underline; text-underline-offset: 2px; }
+  }
+
+  /* Language switcher */
+  .lang { display: flex; justify-content: flex-end; padding-top: 14px; font-size: 0.8125rem; letter-spacing: 0.04em; }
+  .lang a { display: inline-block; padding: 6px 8px; }
+  .lang a[aria-current="true"] { color: var(--text); font-weight: 700; }
+
+  main { padding-top: 18px; padding-bottom: 40px; }
+
+  /* Header */
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr) 160px; gap: 36px; align-items: start; }
+  h1 { margin: 0 0 14px; font: 700 2rem/1.15 var(--sans); letter-spacing: -0.01em; }
+  .intro p { margin: 0 0 14px; }
+  .links { margin-top: 16px; font-size: 0.95rem; line-height: 1.9; }
+  .links a { white-space: nowrap; }
+  .sep { margin: 0 6px; color: #b5b5b5; }
+
+  .portrait {
+    position: relative; width: 160px; height: 160px; border-radius: 50%; overflow: hidden;
+    background: #eee; color: #777; display: grid; place-items: center;
+    font: 700 2.4rem var(--sans);
+  }
+  .portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Sections */
+  h2 { margin: 44px 0 6px; font: 700 1.3rem/1.3 var(--sans); }
+  .lede { margin: 0 0 18px; color: var(--muted); }
+
+  .paper { padding: 4px 0 0; }
+  .fig { display: block; margin: 0 0 6px; }
+  .figcap { margin: 0 0 20px; font-size: 0.875rem; line-height: 1.5; color: var(--muted); }
+  .title { font-weight: 700; font-size: 1.05rem; line-height: 1.4; }
+  .authors { margin-top: 3px; }
+  .venue { color: var(--muted); font-style: italic; }
+  .actions { margin: 4px 0 6px; font-size: 0.95rem; }
+  .paper p { margin: 6px 0 0; }
+  .note { margin-top: 10px; color: var(--muted); font-size: 0.95rem; font-style: italic; }
+
+  .item { padding: 14px 0; border-top: 1px solid var(--rule); }
+  .item:first-of-type { border-top: 0; }
+  .item p { margin: 6px 0 0; }
+
+  details { display: inline; }
+  summary { display: inline; cursor: pointer; color: var(--link); list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  pre {
+    margin: 10px 0 0; padding: 12px 14px;
+    background: var(--code-bg); border: 1px solid var(--rule); border-radius: 4px;
+    font: 0.8rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: pre; max-width: 100%;
+  }
+
+  footer {
+    padding-top: 20px;
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+    color: var(--muted); font-size: 0.875rem;
+  }
+  footer .rule { border-top: 1px solid var(--rule); padding-top: 20px; }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---------------- SAAC-JEPA schematic (from the project page) ---------------- */
+  .hs { display: block; width: 100%; height: auto; overflow: visible;
+        --hs-ink: #0F1B2D; --hs-teal: #1B8A8F; --hs-violet: #5B4BC4; --hs-amber: #B8680F;
+        --hs-absent: #9AA5B1; --hs-panel: #F7F9FA; --hs-line: rgba(15,27,45,.28); }
+  .hs text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .hs__panel { fill: var(--hs-panel); stroke: var(--hs-line); stroke-width: 1; }
+  .hs__head { fill: var(--hs-ink); }
+  .hs__title { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; fill: #fff; }
+  .hs__dim { fill: rgba(255,255,255,.5); font-weight: 400; }
+  .hs__meta { font-size: 10.5px; letter-spacing: .1em; fill: rgba(255,255,255,.62); }
+  .hs__trace { fill: none; stroke: var(--hs-teal); stroke-width: 1.05; stroke-linejoin: round; opacity: .9; }
+  .hs__trace--act { stroke: var(--hs-amber); stroke-width: 1.5; stroke-dasharray: 6 3; opacity: 1; }
+  .hs__trace--flat { stroke: var(--hs-absent); stroke-width: 1; stroke-dasharray: 3 3.5; }
+  .hs__wire { fill: none; stroke: var(--hs-line); stroke-width: 1.2; }
+  .hs__latent { fill: rgba(91,75,196,.07); stroke: var(--hs-violet); stroke-width: 1.2; }
+  .hs__lab, .hs__emit { paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; }
+  .hs__lab { font-size: 11px; font-weight: 700; letter-spacing: .14em; fill: var(--hs-violet); }
+  .hs__emit { font-size: 10px; letter-spacing: .14em; fill: var(--hs-violet); opacity: .35; }
+
+  /* Animated parts. Paused by default: the still frame is the cycle at 2 s of
+     2.6 s (negative delays), which shows a packet in flight and uneven bars. */
+  .hs__pulse  { fill: none; stroke: var(--hs-violet); stroke-width: 1.2; opacity: 0; transform-box: fill-box; transform-origin: 50% 50%;
+                animation-name: hsRing;  animation-timing-function: ease-out; }
+  .hs__emit   { animation-name: hsBlink; animation-timing-function: ease-in-out; }
+  .hs__bars rect { fill: var(--hs-violet); opacity: .5; transform-box: fill-box; transform-origin: 50% 100%;
+                animation-name: hsPump;  animation-timing-function: ease-in-out; }
+  .hs__packet { fill: var(--hs-violet); opacity: 0; }
+  .hs__packet--in  { animation-name: hsIn;  animation-timing-function: cubic-bezier(.5,0,.8,.6); }
+  .hs__packet--out { fill: var(--hs-teal); animation-name: hsOut; animation-timing-function: cubic-bezier(.2,.4,.5,1); }
+  .hs__pulse, .hs__emit, .hs__bars rect, .hs__packet {
+    animation-duration: 2.6s; animation-iteration-count: infinite;
+    animation-delay: -2s; animation-play-state: paused;
+  }
+  .hs__bars rect:nth-child(2) { animation-delay: -1.88s; }
+  .hs__bars rect:nth-child(3) { animation-delay: -1.76s; }
+  .hs__bars rect:nth-child(4) { animation-delay: -1.64s; }
+  .hs__bars rect:nth-child(5) { animation-delay: -1.52s; }
+  .hs__bars rect:nth-child(6) { animation-delay: -1.40s; }
+  .hs.is-on .hs__pulse, .hs.is-on .hs__emit, .hs.is-on .hs__bars rect, .hs.is-on .hs__packet { animation-play-state: running; }
+  @keyframes hsRing  { 0% { opacity: .55; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(1.04); } }
+  @keyframes hsBlink { 0% { opacity: 1; } 30%, 100% { opacity: .28; } }
+  @keyframes hsPump  { 0%, 100% { transform: scaleY(.35); } 45% { transform: scaleY(1); } }
+  @keyframes hsIn  { 0%, 55% { opacity: 0; transform: translateX(0); } 62% { opacity: 1; } 97% { opacity: 1; transform: translateX(44px); } 100% { opacity: 0; transform: translateX(46px); } }
+  @keyframes hsOut { 0% { opacity: 0; transform: translateX(0); } 6% { opacity: 1; } 38% { opacity: 1; transform: translateX(44px); } 42%, 100% { opacity: 0; transform: translateX(46px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hs.is-on .hs__pulse, .hs.is-on .hs__emit, .hs.is-on .hs__bars rect, .hs.is-on .hs__packet { animation-play-state: paused; }
+  }
+
+  /* ------------------------------- Touch ------------------------------- */
+  /* Fingers need ~44 px targets (Apple HIG, WCAG 2.5.5). Inline links inside
+     sentences are exempt; the link rows and the switcher are not. */
+  @media (pointer: coarse) {
+    .lang a { min-width: var(--tap); min-height: var(--tap); padding: 0 10px; display: inline-flex; align-items: center; justify-content: center; }
+    .links { line-height: 1.6; }
+    .links a, .actions a, .actions summary { display: inline-block; padding: 11px 0; }
+  }
+
+  /* ------------------------------ Narrow ------------------------------- */
+  @media (max-width: 640px) {
+    :root { --gutter: 16px; }
+    .lang { padding-top: 6px; }
+    main { padding-top: 6px; padding-bottom: 28px; }
+    .intro { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .portrait { order: -1; width: 112px; height: 112px; font-size: 1.8rem; }
+    h1 { font-size: 1.75rem; }
+    h2 { margin-top: 36px; }
+    .links, .actions { font-size: 1rem; }
+    main p { -webkit-hyphens: auto; hyphens: auto; }
+  }
+  /* Below ~560 px the in-figure labels shrink under 5 px: hide them, the
+     caption under the figure carries the same information as real text. */
+  @media (max-width: 560px) {
+    .hs text { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="lang wrap" id="lang" aria-label="Language">
+  <a href="?lang=en" hreflang="en" lang="en" aria-current="true">EN</a>
+  <a href="?lang=fr" hreflang="fr" lang="fr">FR</a>
+  <a href="?lang=de" hreflang="de" lang="de">DE</a>
+</nav>
+
+<div id="page">
+<main class="wrap">
+
+  <header class="intro">
+    <div>
+      <h1>Matthieu Ostertag</h1>
+      <p data-i18n="intro1">
+        I am an engineering student at <a href="https://mines-nancy.univ-lorraine.fr/">Mines Nancy</a>
+        (Université de Lorraine), specialising in Industrial and Materials Engineering (GIM). I work on
+        <strong>world models for industrial machines</strong>: latent dynamics models that predict how a
+        process will evolve under candidate commands, and whether that knowledge survives the move to a
+        machine the model has never seen.
+      </p>
+      <p data-i18n="intro2">
+        From 2027 I will join <a href="https://www.ecoledesponts.fr/">École des Ponts ParisTech</a> through its
+        &ldquo;Talents&rdquo; track (formation complémentaire intégrée), in the Department of Applied Mathematics
+        and Computer Science (IMI). I co-initiated
+        <a href="https://hacktheworlds.fr/en/index.html">Hack the World(s)</a>, a 24-hour hackathon on world models.
+        Before that, I worked in strategy and engineering at Atos (London, Paris) and was a research intern
+        at the German Aerospace Center (DLR) in Cologne.
+      </p>
+      <div class="links">
+        <a class="email" href="#" data-i18n="email">Email</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://scholar.google.com/citations?user=CJ8z4rwAAAAJ">Scholar</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://openreview.net/profile?id=~Matthieu_Ostertag1">OpenReview</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://orcid.org/0009-0002-3829-0536">ORCID</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://github.com/ostertagmatthieu-dev">GitHub</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://huggingface.co/mostertag">Hugging Face</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://www.alphaxiv.org/@matthieu-ostertag">alphaXiv</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://www.linkedin.com/in/matthieu-ostertag/">LinkedIn</a>
+      </div>
+    </div>
+    <div class="portrait" aria-hidden="true">MO<img src="photo.jpg" alt="" width="160" height="160" decoding="async" onerror="this.remove()"></div>
+  </header>
+
+  <section aria-labelledby="research">
+    <h2 id="research" data-i18n="research">Research</h2>
+    <p class="lede" data-i18n="lede">
+      I am interested in world models that predict in representation space rather than in signal space,
+      are conditioned on the actions a controller can take, and keep working when the sensing interface changes.
+    </p>
+
+    <article class="paper">
+      <a class="fig" href="https://ostertagmatthieu-dev.github.io/saac-jepa/" aria-label="Project page" data-i18n-aria="aProject">
+        <svg class="hs" viewBox="12 22 1056 230" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="hs-srcPat" patternUnits="userSpaceOnUse" x="16" y="0" width="404" height="268"><g id="hs-srcFlow"></g></pattern>
+            <pattern id="hs-tgtPat" patternUnits="userSpaceOnUse" x="660" y="0" width="404" height="268"><g id="hs-tgtFlow"></g></pattern>
+            <pattern id="hs-tgtFadePat" patternUnits="userSpaceOnUse" x="660" y="0" width="404" height="268"><g id="hs-tgtFadeFlow"></g></pattern>
+            <linearGradient id="hs-fadeOut" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+              <stop offset="0.30" stop-color="#fff" stop-opacity="1"/>
+              <stop offset="0.62" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="hs-fadeIn" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0.34" stop-color="#fff" stop-opacity="0"/>
+              <stop offset="0.66" stop-color="#fff" stop-opacity="1"/>
+            </linearGradient>
+            <mask id="hs-maskOut"><rect x="660" y="44" width="404" height="204" fill="url(#hs-fadeOut)"/></mask>
+            <mask id="hs-maskIn"><rect x="660" y="44" width="404" height="204" fill="url(#hs-fadeIn)"/></mask>
+          </defs>
+
+          <rect class="hs__panel" x="16" y="26" width="404" height="222" rx="3"/>
+          <rect class="hs__head" x="16" y="26" width="404" height="19"/>
+          <text class="hs__title" x="26" y="40">THWS SOURCE <tspan class="hs__dim">· SPINNER U5-620</tspan></text>
+          <text class="hs__meta" x="410" y="40" text-anchor="end">17 CH + 4 CMD · 1 Hz</text>
+          <rect x="16" y="44" width="404" height="204" fill="url(#hs-srcPat)"/>
+
+          <g>
+            <path class="hs__wire" d="M424 146 H 470"/>
+            <path class="hs__wire" d="M610 146 H 656"/>
+            <circle class="hs__packet hs__packet--in" cx="424" cy="146" r="3"/>
+            <circle class="hs__packet hs__packet--out" cx="610" cy="146" r="3"/>
+            <rect class="hs__latent" x="472" y="70" width="136" height="152" rx="3"/>
+            <rect class="hs__pulse" x="472" y="70" width="136" height="152" rx="3"/>
+            <text class="hs__lab" x="540" y="104" text-anchor="middle">LATENT</text>
+            <text class="hs__lab" x="540" y="122" text-anchor="middle">STATE z</text>
+            <g class="hs__bars">
+              <rect x="492" y="140" width="10" height="46" rx="1.5"/>
+              <rect x="510" y="140" width="10" height="46" rx="1.5"/>
+              <rect x="528" y="140" width="10" height="46" rx="1.5"/>
+              <rect x="546" y="140" width="10" height="46" rx="1.5"/>
+              <rect x="564" y="140" width="10" height="46" rx="1.5"/>
+              <rect x="582" y="140" width="10" height="46" rx="1.5"/>
+            </g>
+            <text class="hs__emit" x="540" y="208" text-anchor="middle">PREDICTION EMITTED</text>
+          </g>
+
+          <rect class="hs__panel" x="660" y="26" width="404" height="222" rx="3"/>
+          <rect class="hs__head" x="660" y="26" width="404" height="19"/>
+          <text class="hs__title" x="670" y="40">JOANNEUM TARGET <tspan class="hs__dim">· SEALED</tspan></text>
+          <text class="hs__meta" x="1054" y="40" text-anchor="end">10 SHARED · 7 ABSENT</text>
+          <g mask="url(#hs-maskIn)"><g id="hs-tgtAbsent"></g></g>
+          <rect x="660" y="44" width="404" height="204" fill="url(#hs-tgtFadePat)" mask="url(#hs-maskOut)"/>
+          <rect x="660" y="44" width="404" height="204" fill="url(#hs-tgtPat)"/>
+        </svg>
+      </a>
+      <p class="figcap" data-i18n="figCap">
+        Source machine with 17 sensors (teal) and 4 commands (amber) → latent state → target machine.
+        The same weights read both; the 7 sensors the target lacks (grey) simply drop out.
+      </p>
+
+      <div class="title">
+        <a href="https://ostertagmatthieu-dev.github.io/saac-jepa/">World Models for Cross-Machine CNC Transfer under Partial Sensor Overlap</a>
+      </div>
+      <div class="authors">Ayoub Louaye Bouaziz, <strong>Matthieu Ostertag</strong>, Anton Demasles</div>
+      <div class="venue" data-i18n="venue">arXiv preprint, 2026</div>
+      <div class="actions">
+        <a href="https://ostertagmatthieu-dev.github.io/saac-jepa/" data-i18n="aProject">project page</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://arxiv.org/abs/2609.16071">arXiv</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://github.com/ostertagmatthieu-dev/saac-jepa" data-i18n="aCode">code</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://huggingface.co/spaces/mostertag/saac-jepa-world-model" data-i18n="aDemo">demo</a><span class="sep" aria-hidden="true">/</span>
+        <details>
+          <summary data-i18n="bibtex">bibtex</summary>
+<pre>@misc{bouaziz2026worldmodelscrossmachinecnc,
+  title         = {World Models for Cross-Machine CNC Transfer
+                   under Partial Sensor Overlap},
+  author        = {Ayoub Louaye Bouaziz and Matthieu Ostertag
+                   and Anton Demasles},
+  year          = {2026},
+  eprint        = {2609.16071},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  doi           = {10.48550/arXiv.2609.16071}
+}</pre>
+        </details>
+      </div>
+      <p data-i18n="summary">
+        One set of weights reads any subset of a known sensor vocabulary. Locked on a CNC machine with
+        17 sensors and evaluated once, zero-shot, on a machine sharing only 10, the command-conditioned
+        JEPA beats persistence but trails RevIN forecasters; a declared ablation shows that input
+        normalization alone closes the gap, at a cost in calibration.
+      </p>
+      <p class="note" data-i18n="next">
+        Next: verifying that the transferred model uses the commands, training on several source
+        machines, and planning in the learned latent space.
+      </p>
+    </article>
+  </section>
+
+  <section aria-labelledby="community">
+    <h2 id="community" data-i18n="community">Community</h2>
+    <article class="item">
+      <div class="title" data-i18n="htwTitle"><a href="https://hacktheworlds.fr/en/index.html">Hack the World(s)</a> · co-initiator, steering committee</div>
+      <div class="venue" data-i18n="htwVenue">June 19–20, 2026 · Paris School of AI (PSL) and ESIEE Paris</div>
+      <div class="actions" data-i18n="htwLinks">
+        <a href="https://hacktheworlds.fr/en/index.html">website</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://www.youtube.com/watch?v=YAFjys3pn50">opening talk (video)</a><span class="sep" aria-hidden="true">/</span>
+        <a href="https://hacktheworlds.fr/en/organisation.html">team</a>
+      </div>
+      <p data-i18n="htwText">
+        A 24-hour hackathon on world models and JEPA architectures: 100 students from French engineering
+        schools and universities, selected in 25 teams of four, supported through the night by 18 AI
+        researchers and engineers as mentors. Sponsored by Yann LeCun, under the patronage of Philippe
+        Baptiste, French Minister of Higher Education, Research and Space; organized with ESIEE Paris,
+        Mines Nancy and PR[AI]RIE, in partnership with ACADI and with support from AI Factory France.
+      </p>
+      <p data-i18n="htwWinners">
+        Winning projects: a temporal JEPA predicting PDE dynamics in latent space (Gray-Scott), a JEPA world
+        model trained on simulated <i>Drosophila</i> brain dynamics, and two-view self-supervision for
+        rotation-invariant 3D shape features. The CNC project above started there.
+      </p>
+    </article>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div class="rule" data-i18n="footer">
+    Last updated October 2026 · Layout inspired by <a href="https://jonbarron.info/">Jon Barron</a>'s homepage.
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Set to true to show ZORG in the language menu. Otherwise it stays an easter egg:
+     ?lang=zorg, or type "zorglub" anywhere on the page. */
+  var SHOW_ZORG_IN_MENU = false;
+
+  var BASE = "https://ostertagmatthieu-dev.github.io/";
+  var LANGS = ["en", "fr", "de"];
+  var HTML_LANG = { en: "en", fr: "fr", de: "de", zorg: "fr-x-zorg" };
+  var LABEL = { en: "EN", fr: "FR", de: "DE", zorg: "ZORG" };
+
+  var META = {
+    en: "Matthieu Ostertag — engineering student at Mines Nancy working on world models for industrial machines: command-conditioned latent dynamics and cross-machine transfer.",
+    fr: "Matthieu Ostertag — élève ingénieur à Mines Nancy, travaille sur les world models pour machines industrielles : dynamique latente conditionnée par les commandes et transfert entre machines.",
+    de: "Matthieu Ostertag — Ingenieurstudent an der Mines Nancy, forscht zu World Models für Industriemaschinen: befehlskonditionierte latente Dynamik und Transfer zwischen Maschinen."
+  };
+
+  var T = {
+    fr: {
+      intro1: 'Je suis élève ingénieur à <a href="https://mines-nancy.univ-lorraine.fr/">Mines Nancy</a> (Université de Lorraine), en formation d’ingénieur de spécialité Génie Industriel et Matériaux (GIM). Je travaille sur les <strong>world models pour machines industrielles</strong>&nbsp;: des modèles de dynamique latente qui prédisent l’évolution d’un procédé selon les commandes envisagées, et je cherche à savoir si ce qu’ils ont appris tient encore sur une machine qu’ils n’ont jamais vue.',
+      intro2: 'À partir de 2027, je rejoindrai l’<a href="https://www.ecoledesponts.fr/">École des Ponts ParisTech</a> comme école d’application, en formation complémentaire intégrée (FCI) dans le cadre du Parcours «&nbsp;Talents&nbsp;», au département Ingénierie Mathématique et Informatique (IMI). Je suis co-initiateur de <a href="https://hacktheworlds.fr/">Hack the World(s)</a>, un hackathon de 24&nbsp;heures consacré aux world models. Auparavant, j’ai travaillé en stratégie et ingénierie chez Atos (Londres, Paris) et j’ai été stagiaire de recherche au Centre allemand pour l’aéronautique et l’astronautique (DLR) à Cologne.',
+      email: 'E-mail',
+      research: 'Recherche',
+      lede: 'Je m’intéresse aux world models qui prédisent dans l’espace des représentations plutôt que dans celui des signaux, qui sont conditionnés par les actions dont dispose un contrôleur, et qui continuent de fonctionner quand l’interface capteurs change.',
+      figCap: 'Machine source à 17&nbsp;capteurs (bleu-vert) et 4&nbsp;commandes (orange) → état latent → machine cible. Les mêmes poids lisent les deux&nbsp;; les 7&nbsp;capteurs absents de la cible (gris) sont simplement ignorés.',
+      venue: 'Prépublication arXiv, 2026',
+      aProject: 'page du projet',
+      aCode: 'code',
+      aDemo: 'démo',
+      bibtex: 'bibtex',
+      summary: 'Un seul jeu de poids lit n’importe quel sous-ensemble d’un vocabulaire de capteurs connu. Verrouillé sur une machine CNC à 17&nbsp;capteurs puis évalué une seule fois, en zero-shot, sur une machine qui n’en partage que 10, le JEPA conditionné par les commandes bat la persistance mais reste derrière les modèles de prévision munis de RevIN&nbsp;; une ablation déclarée à l’avance montre que la normalisation des entrées suffit à combler l’écart, au prix de la calibration.',
+      next: 'Prochaines étapes&nbsp;: vérifier que le modèle transféré utilise bien les commandes, entraîner sur plusieurs machines sources et planifier dans l’espace latent appris.',
+      community: 'Communauté',
+      htwTitle: '<a href="https://hacktheworlds.fr/">Hack the World(s)</a> · co-initiateur, comité de pilotage',
+      htwVenue: '19–20 juin 2026 · Paris School of AI (PSL) et ESIEE Paris',
+      htwLinks: '<a href="https://hacktheworlds.fr/">site</a><span class="sep" aria-hidden="true">/</span><a href="https://www.youtube.com/watch?v=YAFjys3pn50">conférence inaugurale (vidéo)</a><span class="sep" aria-hidden="true">/</span><a href="https://hacktheworlds.fr/organisation.html">équipe</a>',
+      htwText: 'Un hackathon de 24&nbsp;heures sur les world models et les architectures JEPA&nbsp;: 100&nbsp;étudiants d’écoles d’ingénieurs et d’universités françaises, sélectionnés en 25&nbsp;équipes de quatre, accompagnés toute la nuit par 18&nbsp;mentors, chercheurs et ingénieurs en IA. Parrainé par Yann LeCun, sous le haut patronage de Philippe Baptiste, ministre de l’Enseignement supérieur, de la Recherche et de l’Espace&nbsp;; organisé avec ESIEE Paris, Mines Nancy et PR[AI]RIE, en partenariat avec l’ACADI et avec le soutien d’AI Factory France.',
+      htwWinners: 'Projets lauréats&nbsp;: un JEPA temporel qui prédit la dynamique d’une EDP dans l’espace latent (Gray-Scott), un world model JEPA entraîné sur la dynamique simulée du cerveau de la drosophile, et un apprentissage auto-supervisé invariant à la rotation sur nuages de points. Le projet CNC ci-dessus y est né.',
+      footer: 'Dernière mise à jour&nbsp;: octobre 2026 · Mise en page inspirée de celle de <a href="https://jonbarron.info/">Jon Barron</a>.'
+    },
+    de: {
+      intro1: 'Ich studiere an der <a href="https://mines-nancy.univ-lorraine.fr/">Mines Nancy</a> (Université de Lorraine) im Ingenieurstudiengang Génie Industriel et Matériaux (GIM). Ich arbeite an <strong>World Models für Industriemaschinen</strong>: latente Dynamikmodelle, die vorhersagen, wie sich ein Prozess unter möglichen Steuerbefehlen entwickelt – und ob dieses Wissen den Wechsel auf eine Maschine übersteht, die das Modell nie gesehen hat.',
+      intro2: 'Ab 2027 wechsle ich im Rahmen des Parcours „Talents“ (formation complémentaire intégrée) an die <a href="https://www.ecoledesponts.fr/">École des Ponts ParisTech</a>, in den Fachbereich Ingénierie Mathématique et Informatique (IMI). Ich habe <a href="https://hacktheworlds.fr/en/index.html">Hack the World(s)</a> mitinitiiert, einen 24-Stunden-Hackathon zu World Models. Zuvor war ich bei Atos (London, Paris) in Strategie und Engineering tätig und Forschungspraktikant am Deutschen Zentrum für Luft- und Raumfahrt (DLR) in Köln.',
+      email: 'E-Mail',
+      research: 'Forschung',
+      lede: 'Mich interessieren World Models, die im Repräsentationsraum statt im Signalraum vorhersagen, auf die möglichen Aktionen einer Steuerung konditioniert sind und auch dann funktionieren, wenn sich die Sensorschnittstelle ändert.',
+      figCap: 'Quellmaschine mit 17 Sensoren (türkis) und 4 Befehlen (orange) → latenter Zustand → Zielmaschine. Dieselben Gewichte lesen beide; die 7 Sensoren, die der Zielmaschine fehlen (grau), fallen einfach weg.',
+      venue: 'arXiv-Preprint, 2026',
+      aProject: 'Projektseite',
+      aCode: 'Code',
+      aDemo: 'Demo',
+      bibtex: 'BibTeX',
+      summary: 'Ein einziger Satz von Gewichten liest jede beliebige Teilmenge eines bekannten Sensorvokabulars. Auf einer CNC-Maschine mit 17 Sensoren festgeschrieben und einmalig zero-shot auf einer Maschine evaluiert, die nur 10 davon teilt, schlägt das befehlskonditionierte JEPA die Persistenzprognose, bleibt aber hinter Prognosemodellen mit RevIN zurück; eine vorab deklarierte Ablation zeigt, dass allein die Eingangsnormalisierung die Lücke schließt – auf Kosten der Kalibrierung.',
+      next: 'Als Nächstes: prüfen, ob das übertragene Modell die Befehle tatsächlich nutzt, auf mehreren Quellmaschinen trainieren und im gelernten latenten Raum planen.',
+      community: 'Engagement',
+      htwTitle: '<a href="https://hacktheworlds.fr/en/index.html">Hack the World(s)</a> · Mitinitiator, Lenkungsausschuss',
+      htwVenue: '19.–20. Juni 2026 · Paris School of AI (PSL) und ESIEE Paris',
+      htwLinks: '<a href="https://hacktheworlds.fr/en/index.html">Website</a><span class="sep" aria-hidden="true">/</span><a href="https://www.youtube.com/watch?v=YAFjys3pn50">Eröffnungsvortrag (Video)</a><span class="sep" aria-hidden="true">/</span><a href="https://hacktheworlds.fr/en/organisation.html">Team</a>',
+      htwText: 'Ein 24-Stunden-Hackathon zu World Models und JEPA-Architekturen: 100 Studierende französischer Ingenieurschulen und Universitäten in 25 Viererteams, die ganze Nacht über begleitet von 18 Mentorinnen und Mentoren aus KI-Forschung und -Entwicklung. Mit Yann LeCun als Schirmherr und unter der Ehrenschirmherrschaft von Philippe Baptiste, französischer Minister für Hochschulbildung, Forschung und Raumfahrt; organisiert mit ESIEE Paris, Mines Nancy und PR[AI]RIE, in Partnerschaft mit ACADI und mit Unterstützung von AI Factory France.',
+      htwWinners: 'Siegerprojekte: ein zeitliches JEPA, das die Dynamik einer PDE im latenten Raum vorhersagt (Gray-Scott), ein JEPA-World-Model, trainiert auf der simulierten Gehirndynamik der Fruchtfliege, und rotationsinvariantes selbstüberwachtes Lernen auf Punktwolken. Das CNC-Projekt oben ist dort entstanden.',
+      footer: 'Zuletzt aktualisiert: Oktober 2026 · Layout nach dem Vorbild der Homepage von <a href="https://jonbarron.info/">Jon Barron</a>.'
+    }
+  };
+
+  function mq(q) { return !!(window.matchMedia && window.matchMedia(q).matches); }
+
+  /* ------------------------------------------------------------------ */
+  /* SAAC-JEPA schematic: traces built once per render; animation runs   */
+  /* on hover (mouse) or while on screen (touch), never with reduced     */
+  /* motion, never in a hidden tab. Returns a teardown function.         */
+  /* ------------------------------------------------------------------ */
+  function mountSchematic(root) {
+    var svg = root.querySelector("svg.hs");
+    if (!svg) return function () {};
+    var NS = "http://www.w3.org/2000/svg";
+    function el(tag, attrs, parent) {
+      var n = document.createElementNS(NS, tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(n);
+      return n;
+    }
+    function rng(a) {
+      return function () {
+        a |= 0; a = (a + 0x6d2b79f5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function periodic(rand, n) {
+      var v = [];
+      for (var i = 0; i < n; i++) v.push(rand() * 2 - 1);
+      return function (t) {
+        var i = Math.floor(t), f = t - i;
+        var a = v[((i % n) + n) % n], b = v[(((i + 1) % n) + n) % n];
+        return a + (b - a) * (f * f * (3 - 2 * f));
+      };
+    }
+
+    var W = 404, TOP = 52, BOT = 240, LANES = 21;
+    var pitch = (BOT - TOP) / (LANES - 1);
+    var ACT = { 4: 1, 9: 1, 14: 1, 19: 1 };
+    var ABSENT = { 1: 1, 3: 1, 6: 1, 8: 1, 12: 1, 16: 1, 18: 1 };
+
+    function tracePath(y, amp, seed) {
+      var r = rng(seed), n1 = periodic(r, 9), n2 = periodic(r, 23), n3 = periodic(r, 47), d = "";
+      for (var x = 0; x <= W; x += 4) {
+        var u = x / W, v = 0.62 * n1(u * 9) + 0.28 * n2(u * 23) + 0.14 * n3(u * 47);
+        d += (x === 0 ? "M" : "L") + x.toFixed(1) + " " + (y + v * amp).toFixed(2);
+      }
+      return d;
+    }
+    function stepPath(y, amp, seed, segs) {
+      var r = rng(seed), lv = [];
+      for (var i = 0; i < segs; i++) lv.push((Math.round(r() * 3) / 3) * 2 - 1);
+      var d = "M0 " + (y + lv[0] * amp).toFixed(2);
+      for (var k = 0; k < segs; k++) {
+        var x = ((k + 1) * W) / segs;
+        d += "L" + x.toFixed(1) + " " + (y + lv[k] * amp).toFixed(2);
+        d += "L" + x.toFixed(1) + " " + (y + lv[(k + 1) % segs] * amp).toFixed(2);
+      }
+      return d;
+    }
+
+    var geom = [];
+    for (var i = 0; i < LANES; i++) {
+      var y = TOP + i * pitch, isAct = !!ACT[i];
+      geom.push({ y: y, isAct: isAct, absent: !isAct && !!ABSENT[i],
+                  d: isAct ? stepPath(y, 2.8, 900 + i, 7) : tracePath(y, 3.0, 100 + i) });
+    }
+    function paint(group, keep) {
+      if (!group) return;
+      geom.forEach(function (g) {
+        if (!keep(g)) return;
+        var p = el("path", { "class": "hs__trace" + (g.isAct ? " hs__trace--act" : ""), d: g.d }, group);
+        if (g.isAct) {
+          /* match the dash period to the lane length so dashes line up across tile seams */
+          try {
+            var L = p.getTotalLength(), n = Math.max(1, Math.round(L / 9));
+            p.style.strokeDasharray = ((L / n) * (2 / 3)).toFixed(3) + " " + ((L / n) / 3).toFixed(3);
+          } catch (e) {}
+        }
+      });
+    }
+    paint(svg.querySelector("#hs-srcFlow"), function () { return true; });
+    paint(svg.querySelector("#hs-tgtFlow"), function (g) { return !g.absent; });
+    paint(svg.querySelector("#hs-tgtFadeFlow"), function (g) { return g.absent; });
+    var abs = svg.querySelector("#hs-tgtAbsent");
+    geom.forEach(function (g) {
+      if (g.absent && abs) el("path", { "class": "hs__trace hs__trace--flat", d: "M660 " + g.y + " H 1064" }, abs);
+    });
+
+    var tilings = ["#hs-srcPat", "#hs-tgtPat", "#hs-tgtFadePat"]
+      .map(function (s) { return svg.querySelector(s); }).filter(Boolean);
+    var SPEED = 26; /* px per second */
+    var running = false, raf = null, last = null, elapsed = 0;
+    var reduced = mq("(prefers-reduced-motion: reduce)");
+
+    function frame(ts) {
+      if (!running) return;
+      if (last !== null) elapsed += Math.min(ts - last, 100);
+      last = ts;
+      var off = -((elapsed / 1000) * SPEED % W);
+      for (var j = 0; j < tilings.length; j++) tilings[j].setAttribute("patternTransform", "translate(" + off.toFixed(2) + ",0)");
+      raf = requestAnimationFrame(frame);
+    }
+    function start() {
+      if (running || reduced) return;
+      running = true; last = null; svg.classList.add("is-on");
+      raf = requestAnimationFrame(frame);
+    }
+    function stop() {
+      running = false; last = null; svg.classList.remove("is-on");
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
+    }
+
+    var want = false, cleanups = [];
+    function sync() { (want && !document.hidden) ? start() : stop(); }
+    function on(target, ev, fn) {
+      target.addEventListener(ev, fn);
+      cleanups.push(function () { target.removeEventListener(ev, fn); });
+    }
+    var host = svg.closest(".paper") || svg;
+    if (mq("(hover: hover) and (pointer: fine)")) {
+      on(host, "mouseenter", function () { want = true; sync(); });
+      on(host, "mouseleave", function () { want = false; sync(); });
+      on(host, "focusin", function () { want = true; sync(); });
+      on(host, "focusout", function (e) { if (!host.contains(e.relatedTarget)) { want = false; sync(); } });
+    } else if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) { want = es[0].isIntersecting; sync(); }, { threshold: 0.6 });
+      io.observe(svg);
+      cleanups.push(function () { io.disconnect(); });
+    }
+    on(document, "visibilitychange", sync);
+
+    return function () { stop(); cleanups.forEach(function (f) { f(); }); };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Languages                                                           */
+  /* ------------------------------------------------------------------ */
+  var page = document.getElementById("page");
+  var nav = document.getElementById("lang");
+  var pristine = page.innerHTML;
+  var current = "en";
+  var unmount = function () {};
+
+  /* Zorglangue: every word written backwards, word order kept (Eviv Bulgroz!). */
+  var WORD;
+  try { WORD = new RegExp("\\p{L}+", "gu"); } catch (e) { WORD = /[A-Za-zÀ-ÖØ-öø-ÿ]+/g; }
+  function zorgWord(w) {
+    var chars = Array.from(w);
+    if (chars.length < 2) return w;
+    var r = chars.reverse().join("");
+    if (w === w.toUpperCase()) return r.toUpperCase();
+    var lower = r.toLowerCase();
+    if (w.charAt(0) !== w.charAt(0).toLowerCase()) return lower.charAt(0).toUpperCase() + lower.slice(1);
+    return lower;
+  }
+  function zorgify(root) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), nodes = [];
+    while (walker.nextNode()) {
+      var n = walker.currentNode;
+      if (n.parentNode && n.parentNode.closest && n.parentNode.closest("pre, script, style")) continue;
+      nodes.push(n);
+    }
+    nodes.forEach(function (n) { n.nodeValue = n.nodeValue.replace(WORD, zorgWord); });
+  }
+
+  function setEmail() {
+    var u = "ostertag.matthieu", d = "gmail.com";
+    page.querySelectorAll("a.email").forEach(function (a) { a.href = "mailto:" + u + "@" + d; });
+  }
+
+  function renderNav(lang) {
+    var list = LANGS.slice();
+    if (SHOW_ZORG_IN_MENU || lang === "zorg") list.push("zorg");
+    nav.innerHTML = list.map(function (l) {
+      var h = HTML_LANG[l];
+      return '<a href="?lang=' + l + '" data-lang="' + l + '" lang="' + h + '"' +
+        (l !== "zorg" ? ' hreflang="' + h + '"' : "") +
+        (l === lang ? ' aria-current="true"' : "") + ">" + LABEL[l] + "</a>";
+    }).join("");
+  }
+
+  function apply(lang) {
+    if (lang !== "zorg" && LANGS.indexOf(lang) < 0) lang = "en";
+    unmount();
+    page.innerHTML = pristine;
+    var src = lang === "zorg" ? "fr" : lang;
+    if (src !== "en") {
+      var dict = T[src];
+      page.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var k = el.getAttribute("data-i18n");
+        if (dict[k] != null) el.innerHTML = dict[k];
+      });
+      page.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+        var k = el.getAttribute("data-i18n-aria");
+        if (dict[k] != null) el.setAttribute("aria-label", dict[k]);
+      });
+    }
+    if (lang === "zorg") zorgify(page);
+
+    document.documentElement.lang = HTML_LANG[lang];
+    document.title = lang === "zorg" ? zorgWord("Matthieu") + " " + zorgWord("Ostertag") : "Matthieu Ostertag";
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", META[src]);
+    var canon = document.querySelector('link[rel="canonical"]');
+    if (canon) canon.setAttribute("href", BASE + (lang === "en" || lang === "zorg" ? "" : "?lang=" + lang));
+
+    setEmail();
+    renderNav(lang);
+    unmount = mountSchematic(page);
+    current = lang;
+  }
+
+  function choose(lang) {
+    apply(lang);
+    try {
+      var url = new URL(window.location.href);
+      if (lang === "en") url.searchParams.delete("lang"); else url.searchParams.set("lang", lang);
+      window.history.replaceState(null, "", url.toString());
+    } catch (e) {}
+    if (lang !== "zorg") { try { window.localStorage.setItem("lang", lang); } catch (e) {} }
+  }
+
+  nav.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[data-lang]");
+    if (!a) return;
+    e.preventDefault();
+    choose(a.getAttribute("data-lang"));
+  });
+
+  var typed = "";
+  document.addEventListener("keydown", function (e) {
+    if (!e.key || e.key.length !== 1) return;
+    typed = (typed + e.key.toLowerCase()).slice(-7);
+    if (typed === "zorglub") { typed = ""; choose(current === "zorg" ? "fr" : "zorg"); }
+  });
+
+  var initial = "en";
+  try {
+    var q = new URLSearchParams(window.location.search).get("lang");
+    var saved = null;
+    try { saved = window.localStorage.getItem("lang"); } catch (e) {}
+    initial = (q || saved || "en").toLowerCase();
+  } catch (e) {}
+  apply(initial);
+})();
+</script>
+</body>
+</html>
