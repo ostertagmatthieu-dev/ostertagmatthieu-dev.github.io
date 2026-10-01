@@ -1,0 +1,6 @@
+# The CSP hash is computed over the exact bytes of index.html: never let Git rewrite line endings.
+*.html text eol=lf
+*.txt  text eol=lf
+*.xml  text eol=lf
+*.json text eol=lf
+*.py   text eol=lf

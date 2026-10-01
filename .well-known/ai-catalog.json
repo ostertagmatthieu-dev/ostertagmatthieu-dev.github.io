@@ -1,0 +1,35 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Matthieu Ostertag",
+    "identifier": "ostertagmatthieu-dev.github.io"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:ostertagmatthieu-dev.github.io:docs:homepage",
+      "displayName": "Matthieu Ostertag — homepage summary for language models",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://ostertagmatthieu-dev.github.io/llms.txt",
+      "description": "Who Matthieu Ostertag is, his research on world models for industrial machines, publications, Hack the World(s), and profile links.",
+      "representativeQueries": [
+        "Who is Matthieu Ostertag?",
+        "What does Matthieu Ostertag work on?",
+        "Matthieu Ostertag publications on world models",
+        "Who organized the Hack the World(s) world-model hackathon?"
+      ]
+    },
+    {
+      "identifier": "urn:air:ostertagmatthieu-dev.github.io:docs:saac-jepa",
+      "displayName": "SAAC-JEPA — cross-machine CNC world model, summary for language models",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://ostertagmatthieu-dev.github.io/saac-jepa/llms.txt",
+      "description": "Key facts, protocol and results of arXiv:2609.16071, a command-conditioned JEPA world model transferred zero-shot between CNC machines.",
+      "representativeQueries": [
+        "JEPA world model for cross-machine CNC transfer",
+        "World model with partial sensor overlap between machines",
+        "SAAC-JEPA zero-shot results on an unseen CNC machine",
+        "Command-conditioned latent dynamics for CNC milling"
+      ]
+    }
+  ]
+}

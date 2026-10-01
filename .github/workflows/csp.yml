@@ -1,0 +1,11 @@
+name: CSP hash
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inline script hash matches the CSP meta tag
+        run: python3 tools/csp.py --check

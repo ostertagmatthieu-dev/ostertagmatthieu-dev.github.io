@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Strict CSP (GitHub Pages cannot send headers, so it lives in a meta tag). The script hash is
+     generated: after editing the inline script, run `python3 tools/csp.py`. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-PZxMxRZglS4GV10YWl/ufPL5RAm++66fJfnbz8BgGwY=' 'strict-dynamic' https: 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types site">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Matthieu Ostertag</title>
 <meta name="description" content="Matthieu Ostertag — engineering student at Mines Nancy working on world models for industrial machines: command-conditioned latent dynamics and cross-machine transfer.">
 <meta name="author" content="Matthieu Ostertag">
@@ -22,6 +26,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ostertagmatthieu-dev.github.io/">
 
 <link rel="manifest" href="site.webmanifest">
+<link rel="ai-catalog" href="/.well-known/ai-catalog.json" type="application/json">
 
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="Matthieu Ostertag">
@@ -119,11 +124,6 @@
     src: local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"), local("Helvetica Bold"), local("Helvetica-Bold"),
          url("fonts/heros-web-bold.woff2") format("woff2");
   }
-  @font-face {
-    font-family: "Site Sans"; font-style: italic; font-weight: 400; font-display: optional;
-    src: local("Helvetica Neue Italic"), local("HelveticaNeue-Italic"), local("Helvetica Oblique"), local("Helvetica-Oblique"),
-         url("fonts/heros-web-italic.woff2") format("woff2");
-  }
 
   :root {
     --text: #1a1a1a;
@@ -163,6 +163,12 @@
   @media (hover: hover) {
     a:hover, summary:hover { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: currentColor; }
   }
+
+  /* Skip link: hidden until focused from the keyboard */
+  .skip { position: absolute; left: 8px; top: -120px; z-index: 10; padding: 10px 14px; background: #fff;
+          color: var(--link); border: 2px solid var(--link); border-radius: 4px; }
+  .skip:focus { top: 8px; }
+  main:focus { outline: none; }
 
   /* Language switcher */
   .lang { display: flex; justify-content: flex-end; padding-top: 14px; font-size: 0.8125rem; letter-spacing: 0.04em; }
@@ -310,6 +316,7 @@
 </head>
 <body>
 
+<a class="skip" id="skip" href="#main">Skip to content</a>
 <nav class="lang wrap" id="lang" aria-label="Language">
   <a href="?lang=en" hreflang="en" lang="en" aria-current="true">EN</a>
   <a href="?lang=fr" hreflang="fr" lang="fr">FR</a>
@@ -317,7 +324,7 @@
 </nav>
 
 <div id="page">
-<main class="wrap">
+<main class="wrap" id="main" tabindex="-1">
 
   <header class="intro">
     <div>
@@ -348,7 +355,7 @@
         <a href="https://www.linkedin.com/in/matthieu-ostertag/">LinkedIn</a>
       </div>
     </div>
-    <div class="portrait" aria-hidden="true">MO<picture><source srcset="photo.webp" type="image/webp"><img src="photo.jpg" alt="" width="160" height="160" decoding="async" onerror="this.remove()"></picture></div>
+    <div class="portrait"><span aria-hidden="true">MO</span><picture><source srcset="photo.webp" type="image/webp"><img src="photo.jpg" alt="Portrait of Matthieu Ostertag" data-i18n-alt="portraitAlt" width="160" height="160" decoding="async"></picture></div>
   </header>
 
   <section aria-labelledby="research">
@@ -514,6 +521,7 @@
       intro1: 'Je suis élève ingénieur à <a href="https://mines-nancy.univ-lorraine.fr/">Mines Nancy</a> (<a href="https://www.univ-lorraine.fr/">Université de Lorraine</a>), en formation d’ingénieur de spécialité Génie Industriel et Matériaux (GIM). Je travaille sur les <strong>world models pour machines industrielles</strong>&nbsp;: des modèles de dynamique latente qui prédisent l’évolution d’un procédé selon les commandes envisagées, et je cherche à savoir si ce qu’ils ont appris tient encore sur une machine qu’ils n’ont jamais vue.',
       intro2: 'À partir de 2027, je rejoindrai l’<a href="https://ecoledesponts.fr/">École nationale des ponts et chaussées</a> (ENPC, <a href="https://www.ip-paris.fr/">Institut Polytechnique de Paris</a>) comme école d’application, en formation complémentaire intégrée (FCI) dans le cadre du Parcours «&nbsp;Talents&nbsp;», au département Ingénierie Mathématique et Informatique (IMI). Je suis co-initiateur de <a href="https://hacktheworlds.fr/">Hack the World(s)</a>, un hackathon de 24&nbsp;heures consacré aux world models. Auparavant, j’ai travaillé en stratégie et ingénierie chez Atos (Londres, Paris) et j’ai été stagiaire de recherche au Centre allemand pour l’aéronautique et l’astronautique (DLR) à Cologne, à l’Institut für Materialphysik im Weltraum (aujourd’hui intégré à l’<a href="https://www.dlr.de/de/fm">Institut für Frontier Materials auf der Erde und im Weltraum</a>), et au laboratoire <a href="https://icmn.cnrs.fr/">ICMN</a> du CNRS à Orléans.',
       email: 'E-mail',
+      portraitAlt: 'Portrait de Matthieu Ostertag',
       research: 'Recherche',
       lede: 'Je m’intéresse aux world models qui prédisent dans l’espace des représentations plutôt que dans celui des signaux, qui sont conditionnés par les actions dont dispose un contrôleur, et qui continuent de fonctionner quand l’interface capteurs change.',
       figCap: 'Machine source à 17&nbsp;capteurs (bleu-vert) et 4&nbsp;commandes (orange) → état latent → machine cible. Les mêmes poids lisent les deux&nbsp;; les 7&nbsp;capteurs absents de la cible (gris) sont simplement ignorés.',
@@ -536,6 +544,7 @@
       intro1: 'Ich studiere an der <a href="https://mines-nancy.univ-lorraine.fr/">Mines Nancy</a> (<a href="https://www.univ-lorraine.fr/">Université de Lorraine</a>) im Ingenieurstudiengang Génie Industriel et Matériaux (GIM). Ich arbeite an <strong>World Models für Industriemaschinen</strong>: latente Dynamikmodelle, die vorhersagen, wie sich ein Prozess unter möglichen Steuerbefehlen entwickelt – und ob dieses Wissen den Wechsel auf eine Maschine übersteht, die das Modell nie gesehen hat.',
       intro2: 'Ab 2027 wechsle ich im Rahmen des Parcours „Talents“ (formation complémentaire intégrée) an die <a href="https://ecoledesponts.fr/">École nationale des ponts et chaussées</a> (ENPC, <a href="https://www.ip-paris.fr/">Institut Polytechnique de Paris</a>), in den Fachbereich Ingénierie Mathématique et Informatique (IMI). Ich habe <a href="https://hacktheworlds.fr/en/index.html">Hack the World(s)</a> mitinitiiert, einen 24-Stunden-Hackathon zu World Models. Zuvor war ich bei Atos (London, Paris) in Strategie und Engineering tätig und Forschungspraktikant am Deutschen Zentrum für Luft- und Raumfahrt (DLR), Institut für Materialphysik im Weltraum (heute Teil des <a href="https://www.dlr.de/de/fm">Instituts für Frontier Materials auf der Erde und im Weltraum</a>), in Köln, sowie am Centre national de la recherche scientifique (CNRS), Labor <a href="https://icmn.cnrs.fr/">ICMN</a>, in Orléans.',
       email: 'E-Mail',
+      portraitAlt: 'Porträt von Matthieu Ostertag',
       research: 'Forschung',
       lede: 'Mich interessieren World Models, die im Repräsentationsraum statt im Signalraum vorhersagen, auf die möglichen Aktionen einer Steuerung konditioniert sind und auch dann funktionieren, wenn sich die Sensorschnittstelle ändert.',
       figCap: 'Quellmaschine mit 17 Sensoren (türkis) und 4 Befehlen (orange) → latenter Zustand → Zielmaschine. Dieselben Gewichte lesen beide; die 7 Sensoren, die der Zielmaschine fehlen (grau), fallen einfach weg.',
@@ -557,6 +566,16 @@
   };
 
   function mq(q) { return !!(window.matchMedia && window.matchMedia(q).matches); }
+
+  /* Trusted Types (enforced by the CSP): the only HTML this script writes is the
+     author's own markup and translations from this file, never user input. */
+  var ttPolicy = null;
+  try {
+    if (window.trustedTypes && window.trustedTypes.createPolicy) {
+      ttPolicy = window.trustedTypes.createPolicy("site", { createHTML: function (html) { return html; } });
+    }
+  } catch (e) {}
+  function setHTML(el, html) { el.innerHTML = ttPolicy ? ttPolicy.createHTML(html) : html; }
 
   /* ------------------------------------------------------------------ */
   /* SAAC-JEPA schematic: traces built once per render; animation runs   */
@@ -689,7 +708,17 @@
     }
     on(document, "visibilitychange", sync);
 
-    return function () { stop(); cleanups.forEach(function (f) { f(); }); };
+    /* Teardown also removes the generated traces, so a later mount on the same DOM
+       (switching language without a full re-render) starts from a clean schematic. */
+    return function () {
+      stop();
+      cleanups.forEach(function (f) { f(); });
+      ["#hs-srcFlow", "#hs-tgtFlow", "#hs-tgtFadeFlow", "#hs-tgtAbsent"].forEach(function (sel) {
+        var g = svg.querySelector(sel);
+        while (g && g.firstChild) g.removeChild(g.firstChild);
+      });
+      tilings.forEach(function (t) { t.removeAttribute("patternTransform"); });
+    };
   }
 
   /* ------------------------------------------------------------------ */
@@ -699,7 +728,32 @@
   var nav = document.getElementById("lang");
   var pristine = page.innerHTML;
   var current = "en";
+  var dirty = false;            /* true once the DOM no longer matches the static English markup */
   var unmount = function () {};
+  var pendingMount = null;
+  var skip = document.getElementById("skip");
+  var SKIP = { en: "Skip to content", fr: "Aller au contenu", de: "Zum Inhalt springen" };
+
+  /* The schematic's traces are generated in JS. On first load that work waits until
+     the browser is idle, so it never delays the first paint of the text. */
+  function scheduleMount() {
+    var run = function () { pendingMount = null; unmount = mountSchematic(page); };
+    if (window.requestIdleCallback) {
+      var id = window.requestIdleCallback(run, { timeout: 1200 });
+      pendingMount = function () { window.cancelIdleCallback(id); };
+    } else {
+      var t = setTimeout(run, 200);
+      pendingMount = function () { clearTimeout(t); };
+    }
+  }
+  function cancelMount() { if (pendingMount) { pendingMount(); pendingMount = null; } }
+
+  function guardPortrait() {
+    var img = page.querySelector(".portrait img");
+    if (!img) return;
+    if (img.complete && img.naturalWidth === 0) img.remove();
+    else img.addEventListener("error", function () { img.remove(); });
+  }
 
   /* Zorglangue: every word written backwards, word order kept (Eviv Bulgroz!). */
   var WORD;
@@ -731,31 +785,38 @@
   function renderNav(lang) {
     var list = LANGS.slice();
     if (SHOW_ZORG_IN_MENU || lang === "zorg") list.push("zorg");
-    nav.innerHTML = list.map(function (l) {
+    setHTML(nav, list.map(function (l) {
       var h = HTML_LANG[l];
       return '<a href="?lang=' + l + '" data-lang="' + l + '" lang="' + h + '"' +
         (l !== "zorg" ? ' hreflang="' + h + '"' : "") +
         (l === lang ? ' aria-current="true"' : "") + ">" + LABEL[l] + "</a>";
-    }).join("");
+    }).join(""));
   }
 
-  function apply(lang) {
+  function apply(lang, firstLoad) {
     if (lang !== "zorg" && LANGS.indexOf(lang) < 0) lang = "en";
+    cancelMount();
     unmount();
-    page.innerHTML = pristine;
+    unmount = function () {};
+    if (dirty) setHTML(page, pristine);
     var src = lang === "zorg" ? "fr" : lang;
     if (src !== "en") {
       var dict = T[src];
       page.querySelectorAll("[data-i18n]").forEach(function (el) {
         var k = el.getAttribute("data-i18n");
-        if (dict[k] != null) el.innerHTML = dict[k];
+        if (dict[k] != null) setHTML(el, dict[k]);
       });
       page.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
         var k = el.getAttribute("data-i18n-aria");
         if (dict[k] != null) el.setAttribute("aria-label", dict[k]);
       });
+      page.querySelectorAll("[data-i18n-alt]").forEach(function (el) {
+        var k = el.getAttribute("data-i18n-alt");
+        if (dict[k] != null) el.setAttribute("alt", dict[k]);
+      });
     }
     if (lang === "zorg") zorgify(page);
+    dirty = lang !== "en";
 
     document.documentElement.lang = HTML_LANG[lang];
     document.title = lang === "zorg" ? zorgWord("Matthieu") + " " + zorgWord("Ostertag") : "Matthieu Ostertag";
@@ -764,9 +825,11 @@
     var canon = document.querySelector('link[rel="canonical"]');
     if (canon) canon.setAttribute("href", BASE + (lang === "en" || lang === "zorg" ? "" : "?lang=" + lang));
 
+    if (skip) skip.textContent = lang === "zorg" ? SKIP.fr.replace(WORD, zorgWord) : SKIP[src];
     setEmail();
+    guardPortrait();
     renderNav(lang);
-    unmount = mountSchematic(page);
+    if (firstLoad) scheduleMount(); else unmount = mountSchematic(page);
     current = lang;
   }
 
@@ -801,7 +864,60 @@
     try { saved = window.localStorage.getItem("lang"); } catch (e) {}
     initial = (q || saved || "en").toLowerCase();
   } catch (e) {}
-  apply(initial);
+  apply(initial, true);
+
+  /* WebMCP (experimental): read-only tools for AI agents. Registered only where the
+     browser exposes the API (Chrome origin trial); a no-op everywhere else. */
+  (function registerAgentTools() {
+    var mc = document.modelContext || navigator.modelContext;
+    if (!mc || typeof mc.registerTool !== "function") return;
+    var profile = {
+      name: "Matthieu Ostertag",
+      url: BASE,
+      affiliation: "Mines Nancy, Université de Lorraine — engineering degree, Industrial and Materials Engineering (GIM)",
+      next: "École nationale des ponts et chaussées (ENPC, Institut Polytechnique de Paris) from 2027, \u201cTalents\u201d track, IMI department",
+      research: "World models for industrial machines: command-conditioned latent dynamics and cross-machine transfer",
+      publications: [{
+        title: "World Models for Cross-Machine CNC Transfer under Partial Sensor Overlap",
+        authors: ["Ayoub Louaye Bouaziz", "Matthieu Ostertag", "Anton Demasles"],
+        year: 2026, arxiv: "https://arxiv.org/abs/2609.16071",
+        project: "https://ostertagmatthieu-dev.github.io/saac-jepa/",
+        code: "https://github.com/ostertagmatthieu-dev/saac-jepa"
+      }],
+      profiles: {
+        scholar: "https://scholar.google.com/citations?user=CJ8z4rwAAAAJ",
+        openreview: "https://openreview.net/profile?id=~Matthieu_Ostertag1",
+        orcid: "https://orcid.org/0009-0002-3829-0536",
+        github: "https://github.com/ostertagmatthieu-dev",
+        huggingface: "https://huggingface.co/mostertag",
+        linkedin: "https://www.linkedin.com/in/matthieu-ostertag/"
+      }
+    };
+    var text = function (t) { return { content: [{ type: "text", text: t }] }; };
+    var tools = [
+      {
+        name: "get_profile",
+        description: "Return Matthieu Ostertag's profile: affiliation, research focus, publications and profile links, as JSON.",
+        inputSchema: { type: "object", properties: {}, additionalProperties: false },
+        annotations: { readOnlyHint: true },
+        execute: function () { return text(JSON.stringify(profile)); }
+      },
+      {
+        name: "set_page_language",
+        description: "Display this homepage in English, French or German.",
+        inputSchema: {
+          type: "object",
+          properties: { language: { type: "string", enum: ["en", "fr", "de"], description: "Language code" } },
+          required: ["language"],
+          additionalProperties: false
+        },
+        execute: function (args) { choose(args && args.language); return text("Page language: " + current); }
+      }
+    ];
+    tools.forEach(function (tool) {
+      try { var r = mc.registerTool(tool); if (r && typeof r.catch === "function") r.catch(function () {}); } catch (e) {}
+    });
+  })();
 })();
 </script>
 </body>
