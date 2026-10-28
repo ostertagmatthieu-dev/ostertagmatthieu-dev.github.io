@@ -332,7 +332,8 @@ var WIS = (function () {
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var q = new URLSearchParams(location.search);
-  var dir = location.pathname.replace(/[^\/]*$/, '');
+  var dir = location.pathname.replace(/(screen|admin|index)(\.html)?$/, '');
+  if (!/\/$/.test(dir)) dir += '/';
   var voteUrl = q.get('qr') || (location.origin + dir);
   var shown = voteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
