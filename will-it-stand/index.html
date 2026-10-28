@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Will it stand?</title>
-<meta name="description" content="Vote: will tonight's pancake tower stand? Pancake × Corgi, Oct 29.">
+<title>Will the world record be broken?</title>
+<meta name="description" content="Vote: will tonight's pancake tower break the world record? Pancake × Corgi, Oct 29.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
@@ -14,12 +14,12 @@
 <body class="vote">
 <main>
   <p class="kicker">Pancake × Corgi · Oct 29</p>
-  <h1>Will it stand?</h1>
+  <h1>Will the world record be broken?</h1>
   <p class="lede">Tonight we stack pancakes past 42.6 in (108.3 cm). No glue, no support. It has to stand on its own for 5 seconds.</p>
 
   <div class="buttons">
-    <button class="choice yes" id="btn-yes" type="button">YES<small>it stands</small></button>
-    <button class="choice no" id="btn-no" type="button">NO<small>it falls</small></button>
+    <button class="choice yes" id="btn-yes" type="button">YES<small>record broken</small></button>
+    <button class="choice no" id="btn-no" type="button">NO<small>not tonight</small></button>
   </div>
   <p class="mine" id="mine"></p>
 
@@ -68,7 +68,7 @@
     noBtn.classList.toggle('on', mine === 'no');
     yesBtn.disabled = noBtn.disabled = !open || busy;
     document.getElementById('mine').textContent = mine
-      ? 'Your vote: ' + (mine === 'yes' ? 'YES, it stands' : 'NO, it falls') + (open ? '' : ' (locked)')
+      ? 'Your vote: ' + (mine === 'yes' ? 'YES, record broken' : 'NO, not tonight') + (open ? '' : ' (locked)')
       : (open ? 'Tap to vote.' : 'Voting is closed.');
   }
 

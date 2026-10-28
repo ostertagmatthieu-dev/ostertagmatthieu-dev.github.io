@@ -24,8 +24,8 @@ function odds(state) {
 }
 
 function statusText(state, o) {
-  if (state.result === 'stood') return { big: 'IT STOOD!', small: o.yesPct + '% of you called it.' };
-  if (state.result === 'fell') return { big: 'IT FELL.', small: o.noPct + '% of you called it.' };
+  if (state.result === 'stood') return { big: 'RECORD BROKEN!', small: o.yesPct + '% of you called it.' };
+  if (state.result === 'fell') return { big: 'NOT TONIGHT.', small: o.noPct + '% of you called it.' };
   if (state.status === 'frozen') return { big: 'Market closed', small: 'The last pancake is on. Final odds: ' + o.yesPct + '% YES.' };
   return { big: 'Market open', small: 'Vote until the last pancake.' };
 }

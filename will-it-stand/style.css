@@ -22,7 +22,7 @@ button { font: inherit; cursor: pointer; }
 /* ---------- Vote page (phones) ---------- */
 .vote main { max-width: 480px; margin: 0 auto; padding: 28px 18px 40px; }
 .kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet); }
-.vote h1 { font-size: 64px; margin: 10px 0 12px; }
+.vote h1 { font-size: 50px; margin: 10px 0 12px; }
 .lede { font-size: 17px; line-height: 1.4; color: var(--ink-soft); }
 .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 26px 0 14px; }
 .choice {
@@ -53,7 +53,7 @@ button { font: inherit; cursor: pointer; }
   padding: 5vh 5vw; align-items: center;
 }
 .screen .kicker { color: var(--yellow); font-size: 1.6vw; }
-.screen h1 { font-size: 8.5vw; margin: 1vh 0 4vh; }
+.screen h1 { font-size: 6vw; margin: 1vh 0 4vh; }
 .pcts { display: flex; justify-content: space-between; align-items: baseline; }
 .pct { font-weight: 900; font-stretch: 80%; font-size: 9vw; line-height: 0.9; }
 .pct.y { color: var(--yellow); }
