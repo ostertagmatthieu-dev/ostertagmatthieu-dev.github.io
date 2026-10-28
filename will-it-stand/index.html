@@ -9,7 +9,92 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<style>
+:root {
+  --plum: #2a0f2e;
+  --plum-2: #4a1d4f;
+  --cream: #fff8ee;
+  --pink: #ff7ab6;
+  --violet: #8b5cf6;
+  --yellow: #ffd23f;
+  --ink-soft: #6b5468;
+  --line: #ead9e6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--cream);
+  color: var(--plum);
+  -webkit-font-smoothing: antialiased;
+}
+h1, .big { font-stretch: 80%; font-weight: 900; letter-spacing: -0.01em; line-height: 0.95; }
+button { font: inherit; cursor: pointer; }
+
+/* ---------- Vote page (phones) ---------- */
+.vote main { max-width: 480px; margin: 0 auto; padding: 28px 18px 40px; }
+.kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet); }
+.vote h1 { font-size: 50px; margin: 10px 0 12px; }
+.lede { font-size: 17px; line-height: 1.4; color: var(--ink-soft); }
+.buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 26px 0 14px; }
+.choice {
+  border: 3px solid var(--plum); border-radius: 18px; padding: 22px 8px 18px;
+  background: #fff; color: var(--plum); font-size: 34px; font-weight: 900; font-stretch: 80%;
+  transition: transform 0.08s ease;
+}
+.choice small { display: block; font-size: 14px; font-weight: 600; font-stretch: 100%; margin-top: 4px; }
+.choice:active { transform: scale(0.97); }
+.choice.yes.on { background: var(--yellow); }
+.choice.no.on { background: var(--pink); }
+.choice:disabled { opacity: 0.45; cursor: default; }
+.choice.on:disabled { opacity: 1; }
+.mine { min-height: 22px; font-size: 15px; font-weight: 700; text-align: center; }
+.bar { height: 18px; border-radius: 999px; background: var(--pink); overflow: hidden; margin: 18px 0 8px; }
+.bar > div { height: 100%; width: 50%; background: var(--yellow); transition: width 0.6s ease; }
+.odds { font-size: 16px; font-weight: 700; }
+.status-box { margin-top: 22px; padding: 16px; border-radius: 14px; background: var(--plum); color: var(--cream); }
+.status-box .big { font-size: 30px; }
+.status-box p { font-size: 15px; margin-top: 4px; opacity: 0.9; }
+.fine { font-size: 13px; color: var(--ink-soft); margin-top: 22px; line-height: 1.4; }
+.err { color: #b3261e; font-size: 13px; min-height: 18px; margin-top: 8px; }
+
+/* ---------- Screen page (projector, 16:9) ---------- */
+.screen { background: var(--plum); color: var(--cream); overflow: hidden; }
+.screen .wrap {
+  height: 100vh; display: grid; grid-template-columns: 1.6fr 1fr; gap: 4vw;
+  padding: 5vh 5vw; align-items: center;
+}
+.screen .kicker { color: var(--yellow); font-size: 1.6vw; }
+.screen h1 { font-size: 6vw; margin: 1vh 0 4vh; }
+.pcts { display: flex; justify-content: space-between; align-items: baseline; }
+.pct { font-weight: 900; font-stretch: 80%; font-size: 9vw; line-height: 0.9; }
+.pct.y { color: var(--yellow); }
+.pct.n { color: var(--pink); text-align: right; }
+.pct-label { font-size: 1.8vw; font-weight: 800; letter-spacing: 0.06em; }
+.screen .bar { height: 3.2vh; margin: 2.5vh 0 2vh; }
+.screen .count { font-size: 2vw; font-weight: 700; opacity: 0.85; }
+.screen .status-box { background: var(--plum-2); margin-top: 4vh; padding: 2.2vh 2vw; border-radius: 1.2vw; }
+.screen .status-box .big { font-size: 4vw; }
+.screen .status-box p { font-size: 1.8vw; }
+.qr-card { background: var(--cream); color: var(--plum); border-radius: 2vw; padding: 3vh 2vw; text-align: center; }
+.qr-card img { width: 100%; max-width: 30vw; aspect-ratio: 1; display: block; margin: 0 auto; }
+.qr-card .scan { font-size: 3vw; font-weight: 900; font-stretch: 80%; margin-top: 1.5vh; }
+.qr-card .url { font-size: 1.4vw; font-weight: 700; color: var(--violet); margin-top: 0.6vh; word-break: break-all; }
+.screen.done .status-box { background: var(--yellow); color: var(--plum); }
+.screen.done.fell .status-box { background: var(--pink); }
+
+/* ---------- Admin page ---------- */
+.admin main { max-width: 520px; margin: 0 auto; padding: 24px 18px; }
+.admin h1 { font-size: 40px; margin-bottom: 8px; }
+.admin .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.admin button { border: 2px solid var(--plum); border-radius: 12px; padding: 16px 10px; background: #fff; font-weight: 800; font-size: 17px; }
+.admin button.primary { background: var(--plum); color: var(--cream); }
+.admin button.warn { border-color: #b3261e; color: #b3261e; }
+.admin button.armed { background: #b3261e; color: #fff; }
+.admin .state { margin-top: 18px; padding: 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line); font-size: 16px; line-height: 1.5; }
+.admin .links { margin-top: 18px; font-size: 14px; line-height: 1.6; }
+.admin .links a { color: var(--violet); font-weight: 700; }
+</style>
 </head>
 <body class="vote">
 <main>
@@ -34,7 +119,43 @@
   <p class="err" id="err" role="status"></p>
   <p class="fine">No money, just bragging rights. One vote per phone. You can change it until the last pancake is on the tower.</p>
 </main>
-<script src="api.js"></script>
+<script>
+// Shared helpers for the "Will it stand?" pages.
+// The anon key is public by design: the tables are locked, only these functions are callable.
+const SB_RPC = 'https://sxmqxqflawenfkaadfqj.supabase.co/rest/v1/rpc/';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4bXF4cWZsYXdlbmZrYWFkZnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMzMzNzYsImV4cCI6MjEwODcwOTM3Nn0.OinWgfbvTIW6DWrEyM6gAlKPSCUfAPkFLTuozB2VYOs';
+
+async function rpc(fn, body) {
+  const r = await fetch(SB_RPC + fn, {
+    method: 'POST',
+    headers: {
+      apikey: SB_KEY,
+      Authorization: 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body || {})
+  });
+  if (!r.ok) throw new Error(fn + ' failed: ' + r.status);
+  return r.json();
+}
+
+function odds(state) {
+  const yes = state.yes || 0, no = state.no || 0, total = yes + no;
+  const yesPct = total ? Math.round((yes / total) * 100) : 50;
+  return { yes, no, total, yesPct, noPct: 100 - yesPct };
+}
+
+function statusText(state, o) {
+  if (state.result === 'stood') return { big: 'RECORD BROKEN!', small: o.yesPct + '% of you called it.' };
+  if (state.result === 'fell') return { big: 'NOT TONIGHT.', small: o.noPct + '% of you called it.' };
+  if (state.status === 'frozen') return { big: 'Market closed', small: 'The last pancake is on. Final odds: ' + o.yesPct + '% YES.' };
+  return { big: 'Market open', small: 'Vote until the last pancake.' };
+}
+
+function votesLabel(n) {
+  return n === 1 ? '1 vote' : n + ' votes';
+}
+</script>
 <script>
 (function () {
   var STORE = 'wis-device', MINE = 'wis-choice';
