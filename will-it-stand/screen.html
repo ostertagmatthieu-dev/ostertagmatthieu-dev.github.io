@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Will it stand? · Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="screen" id="body">
+<div class="wrap">
+  <section>
+    <p class="kicker">Pancake × Corgi · World record attempt</p>
+    <h1>Will it stand?</h1>
+    <div class="pcts">
+      <div><div class="pct y" id="yes-pct">50%</div><div class="pct-label">YES, IT STANDS</div></div>
+      <div><div class="pct n" id="no-pct">50%</div><div class="pct-label" style="text-align:right">NO, IT FALLS</div></div>
+    </div>
+    <div class="bar" aria-hidden="true"><div id="yesbar"></div></div>
+    <div class="count" id="count">No votes yet</div>
+    <div class="status-box">
+      <div class="big" id="status-big">Market open</div>
+      <p id="status-small">Vote until the last pancake.</p>
+    </div>
+  </section>
+  <aside class="qr-card">
+    <img src="qr.svg" alt="QR code to vote">
+    <div class="scan">Scan to vote</div>
+    <div class="url" id="url"></div>
+  </aside>
+</div>
+<script src="api.js"></script>
+<script>
+(function () {
+  var here = location.href.replace(/screen\.html.*$/, '').replace(/[?#].*$/, '');
+  document.getElementById('url').textContent = here.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  function render(state) {
+    var o = odds(state), s = statusText(state, o);
+    document.getElementById('yes-pct').textContent = o.yesPct + '%';
+    document.getElementById('no-pct').textContent = o.noPct + '%';
+    document.getElementById('yesbar').style.width = o.yesPct + '%';
+    document.getElementById('count').textContent = o.total ? votesLabel(o.total) : 'No votes yet';
+    document.getElementById('status-big').textContent = s.big;
+    document.getElementById('status-small').textContent = s.small;
+    var b = document.getElementById('body');
+    b.classList.toggle('done', !!state.result);
+    b.classList.toggle('fell', state.result === 'fell');
+  }
+  function refresh() { rpc('market_state').then(render).catch(function () {}); }
+  refresh();
+  setInterval(refresh, 2000);
+})();
+</script>
+</body>
+</html>

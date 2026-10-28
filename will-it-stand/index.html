@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Will it stand?</title>
+<meta name="description" content="Vote: will tonight's pancake tower stand? Pancake × Corgi, Oct 29.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="vote">
+<main>
+  <p class="kicker">Pancake × Corgi · Oct 29</p>
+  <h1>Will it stand?</h1>
+  <p class="lede">Tonight we stack pancakes past 42.6 in (108.3 cm). No glue, no support. It has to stand on its own for 5 seconds.</p>
+
+  <div class="buttons">
+    <button class="choice yes" id="btn-yes" type="button">YES<small>it stands</small></button>
+    <button class="choice no" id="btn-no" type="button">NO<small>it falls</small></button>
+  </div>
+  <p class="mine" id="mine"></p>
+
+  <div class="bar" aria-hidden="true"><div id="yesbar"></div></div>
+  <p class="odds" id="odds">Loading the odds…</p>
+
+  <div class="status-box">
+    <div class="big" id="status-big">Market open</div>
+    <p id="status-small">Vote until the last pancake.</p>
+  </div>
+
+  <p class="err" id="err" role="status"></p>
+  <p class="fine">No money, just bragging rights. One vote per phone. You can change it until the last pancake is on the tower.</p>
+</main>
+<script src="api.js"></script>
+<script>
+(function () {
+  var STORE = 'wis-device', MINE = 'wis-choice';
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+    });
+  }
+  var device = load(STORE);
+  if (!device) { device = uuid(); save(STORE, device); }
+  var mine = load(MINE);
+  var state = null, busy = false;
+
+  var yesBtn = document.getElementById('btn-yes');
+  var noBtn = document.getElementById('btn-no');
+  var err = document.getElementById('err');
+
+  function render() {
+    if (!state) return;
+    var o = odds(state), s = statusText(state, o), open = state.status === 'open';
+    document.getElementById('yesbar').style.width = o.yesPct + '%';
+    document.getElementById('odds').textContent = o.total
+      ? o.yesPct + '% YES · ' + o.noPct + '% NO · ' + votesLabel(o.total)
+      : 'No votes yet. Be the first.';
+    document.getElementById('status-big').textContent = s.big;
+    document.getElementById('status-small').textContent = s.small;
+    yesBtn.classList.toggle('on', mine === 'yes');
+    noBtn.classList.toggle('on', mine === 'no');
+    yesBtn.disabled = noBtn.disabled = !open || busy;
+    document.getElementById('mine').textContent = mine
+      ? 'Your vote: ' + (mine === 'yes' ? 'YES, it stands' : 'NO, it falls') + (open ? '' : ' (locked)')
+      : (open ? 'Tap to vote.' : 'Voting is closed.');
+  }
+
+  function refresh() {
+    return rpc('market_state').then(function (s) { state = s; err.textContent = ''; render(); })
+      .catch(function () { err.textContent = 'Connection is slow, retrying…'; });
+  }
+
+  function vote(choice) {
+    if (busy || !state || state.status !== 'open') return;
+    busy = true; mine = choice; save(MINE, choice); render();
+    rpc('cast_vote', { p_device: device, p_choice: choice })
+      .then(function (s) { state = s; err.textContent = ''; })
+      .catch(function () { err.textContent = 'Vote not saved, tap again.'; })
+      .then(function () { busy = false; render(); });
+  }
+
+  yesBtn.addEventListener('click', function () { vote('yes'); });
+  noBtn.addEventListener('click', function () { vote('no'); });
+
+  rpc('my_vote', { p_device: device }).then(function (c) {
+    if (c === 'yes' || c === 'no') { mine = c; save(MINE, c); render(); }
+  }).catch(function () {});
+  refresh();
+  setInterval(refresh, 3000);
+})();
+</script>
+</body>
+</html>

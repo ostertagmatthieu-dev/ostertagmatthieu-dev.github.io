@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Will it stand? · Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="admin">
+<main>
+  <h1>Admin</h1>
+  <p>Keep this link private. Every button acts immediately.</p>
+  <div class="row">
+    <button class="primary" id="freeze" type="button">Freeze (last pancake)</button>
+    <button id="open" type="button">Reopen voting</button>
+  </div>
+  <div class="row">
+    <button id="stood" type="button">Result: IT STOOD</button>
+    <button id="fell" type="button">Result: IT FELL</button>
+  </div>
+  <div class="row">
+    <button class="warn" id="reset" type="button">Reset all votes</button>
+    <span></span>
+  </div>
+  <div class="state" id="state">Loading…</div>
+  <p class="err" id="err" role="status"></p>
+  <div class="links">
+    <a id="link-vote" href="./">Vote page</a> · <a id="link-screen" href="screen.html">Screen page</a>
+  </div>
+</main>
+<script src="api.js"></script>
+<script>
+(function () {
+  var key = new URLSearchParams(location.search).get('key') || '';
+  var err = document.getElementById('err');
+  function show(s) {
+    var o = odds(s);
+    document.getElementById('state').innerHTML = '';
+    var lines = [
+      'Status: ' + s.status + (s.result ? ' · result: ' + s.result : ''),
+      'YES: ' + o.yes + ' · NO: ' + o.no + ' · total: ' + o.total,
+      'Odds shown: ' + o.yesPct + '% YES'
+    ];
+    lines.forEach(function (t) { var d = document.createElement('div'); d.textContent = t; document.getElementById('state').appendChild(d); });
+  }
+  function act(action) {
+    rpc('admin_set', { p_key: key, p_action: action })
+      .then(function (s) { err.textContent = ''; show(s); })
+      .catch(function () { err.textContent = 'Refused: check the key in the link.'; });
+  }
+  ['freeze', 'open', 'stood', 'fell'].forEach(function (a) {
+    document.getElementById(a).addEventListener('click', function () { act(a); });
+  });
+  var resetBtn = document.getElementById('reset'), armed = false, timer = null;
+  resetBtn.addEventListener('click', function () {
+    if (!armed) {
+      armed = true; resetBtn.classList.add('armed'); resetBtn.textContent = 'Tap again to erase all votes';
+      timer = setTimeout(function () { armed = false; resetBtn.classList.remove('armed'); resetBtn.textContent = 'Reset all votes'; }, 4000);
+      return;
+    }
+    clearTimeout(timer); armed = false; resetBtn.classList.remove('armed'); resetBtn.textContent = 'Reset all votes';
+    act('reset');
+  });
+  function refresh() { rpc('market_state').then(show).catch(function () {}); }
+  refresh();
+  setInterval(refresh, 2000);
+})();
+</script>
+</body>
+</html>
