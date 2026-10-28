@@ -2,190 +2,446 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Will it stand? · Admin</title>
+<meta name="theme-color" content="#2C002A">
+<title>Will it stand? Control room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --plum: #2a0f2e;
-  --plum-2: #4a1d4f;
-  --cream: #fff8ee;
-  --pink: #ff7ab6;
-  --violet: #8b5cf6;
-  --yellow: #ffd23f;
-  --ink-soft: #6b5468;
-  --line: #ead9e6;
+  --plum: #2C002A;
+  --plum-2: #3B0B38;
+  --plum-3: #4D1A49;
+  --cream: #FFFCF8;
+  --sand: #EFE4DC;
+  --muted: #BBA8AE;
+  --pink: #FF7AA0;
+  --pink-deep: #E33A6A;
+  --purple: #BA8BFF;
+  --purple-deep: #8D43FD;
+  --yellow: #FFBD7A;
+  --yellow-deep: #F38F43;
+  --font: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-body {
-  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: var(--cream);
-  color: var(--plum);
-  -webkit-font-smoothing: antialiased;
-}
-h1, .big { font-stretch: 80%; font-weight: 900; letter-spacing: -0.01em; line-height: 0.95; }
-button { font: inherit; cursor: pointer; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html, body { margin: 0; background: var(--plum); color: var(--cream); }
+body { font-family: var(--font); font-optical-sizing: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+.num { font-variant-numeric: tabular-nums; }
+.logo { display: inline-flex; color: var(--cream); text-decoration: none; }
+.logo svg { height: 26px; width: auto; display: block; }
+.conn { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.conn::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); }
+.conn[data-state="live"]::before { background: #7EE3A6; box-shadow: 0 0 0 4px rgba(126, 227, 166, .18); }
+.conn[data-state="down"]::before { background: var(--pink-deep); }
+.ticker { background: var(--yellow); color: var(--plum); font-weight: 700; }
+.ticker[hidden] { display: none; }
 
-/* ---------- Vote page (phones) ---------- */
-.vote main { max-width: 480px; margin: 0 auto; padding: 28px 18px 40px; }
-.kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet); }
-.vote h1 { font-size: 50px; margin: 10px 0 12px; }
-.lede { font-size: 17px; line-height: 1.4; color: var(--ink-soft); }
-.buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 26px 0 14px; }
-.choice {
-  border: 3px solid var(--plum); border-radius: 18px; padding: 22px 8px 18px;
-  background: #fff; color: var(--plum); font-size: 34px; font-weight: 900; font-stretch: 80%;
-  transition: transform 0.08s ease;
+/* Pancake towers */
+.tower { position: relative; }
+.tower .pc { position: absolute; display: block; overflow: visible; }
+.tower[data-color="pink"] { --pancake-color-back: var(--pink-deep); --pancake-color-front: var(--pink); }
+.tower[data-color="purple"] { --pancake-color-back: var(--purple-deep); --pancake-color-front: var(--purple); }
+.tower .plate { position: absolute; bottom: 0; height: 4px; border-radius: 4px; background: var(--sand); opacity: .9; }
+.tower .pc.drop { animation: pc-drop .45s cubic-bezier(.2, .9, .3, 1.15) both; }
+@keyframes pc-drop { from { transform: translateY(-60px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .tower .pc.drop { animation: none; }
 }
-.choice small { display: block; font-size: 14px; font-weight: 600; font-stretch: 100%; margin-top: 4px; }
-.choice:active { transform: scale(0.97); }
-.choice.yes.on { background: var(--yellow); }
-.choice.no.on { background: var(--pink); }
-.choice:disabled { opacity: 0.45; cursor: default; }
-.choice.on:disabled { opacity: 1; }
-.mine { min-height: 22px; font-size: 15px; font-weight: 700; text-align: center; }
-.bar { height: 18px; border-radius: 999px; background: var(--pink); overflow: hidden; margin: 18px 0 8px; }
-.bar > div { height: 100%; width: 50%; background: var(--yellow); transition: width 0.6s ease; }
-.odds { font-size: 16px; font-weight: 700; }
-.status-box { margin-top: 22px; padding: 16px; border-radius: 14px; background: var(--plum); color: var(--cream); }
-.status-box .big { font-size: 30px; }
-.status-box p { font-size: 15px; margin-top: 4px; opacity: 0.9; }
-.fine { font-size: 13px; color: var(--ink-soft); margin-top: 22px; line-height: 1.4; }
-.err { color: #b3261e; font-size: 13px; min-height: 18px; margin-top: 8px; }
 
-/* ---------- Screen page (projector, 16:9) ---------- */
-.screen { background: var(--plum); color: var(--cream); overflow: hidden; }
-.screen .wrap {
-  height: 100vh; display: grid; grid-template-columns: 1.6fr 1fr; gap: 4vw;
-  padding: 5vh 5vw; align-items: center;
-}
-.screen .kicker { color: var(--yellow); font-size: 1.6vw; }
-.screen h1 { font-size: 6vw; margin: 1vh 0 4vh; }
-.pcts { display: flex; justify-content: space-between; align-items: baseline; }
-.pct { font-weight: 900; font-stretch: 80%; font-size: 9vw; line-height: 0.9; }
-.pct.y { color: var(--yellow); }
-.pct.n { color: var(--pink); text-align: right; }
-.pct-label { font-size: 1.8vw; font-weight: 800; letter-spacing: 0.06em; }
-.screen .bar { height: 3.2vh; margin: 2.5vh 0 2vh; }
-.screen .count { font-size: 2vw; font-weight: 700; opacity: 0.85; }
-.screen .status-box { background: var(--plum-2); margin-top: 4vh; padding: 2.2vh 2vw; border-radius: 1.2vw; }
-.screen .status-box .big { font-size: 4vw; }
-.screen .status-box p { font-size: 1.8vw; }
-.qr-card { background: var(--cream); color: var(--plum); border-radius: 2vw; padding: 3vh 2vw; text-align: center; }
-.qr-card img { width: 100%; max-width: 30vw; aspect-ratio: 1; display: block; margin: 0 auto; }
-.qr-card .scan { font-size: 3vw; font-weight: 900; font-stretch: 80%; margin-top: 1.5vh; }
-.qr-card .url { font-size: 1.4vw; font-weight: 700; color: var(--violet); margin-top: 0.6vh; word-break: break-all; }
-.screen.done .status-box { background: var(--yellow); color: var(--plum); }
-.screen.done.fell .status-box { background: var(--pink); }
-
-/* ---------- Admin page ---------- */
-.admin main { max-width: 520px; margin: 0 auto; padding: 24px 18px; }
-.admin h1 { font-size: 40px; margin-bottom: 8px; }
-.admin .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-.admin button { border: 2px solid var(--plum); border-radius: 12px; padding: 16px 10px; background: #fff; font-weight: 800; font-size: 17px; }
-.admin button.primary { background: var(--plum); color: var(--cream); }
-.admin button.warn { border-color: #b3261e; color: #b3261e; }
-.admin button.armed { background: #b3261e; color: #fff; }
-.admin .state { margin-top: 18px; padding: 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line); font-size: 16px; line-height: 1.5; }
-.admin .links { margin-top: 18px; font-size: 14px; line-height: 1.6; }
-.admin .links a { color: var(--violet); font-weight: 700; }
+.wrap { max-width: 560px; margin: 0 auto; padding: max(16px, env(safe-area-inset-top)) 18px 40px; display: flex; flex-direction: column; gap: 16px; }
+.top { display: flex; align-items: center; justify-content: space-between; }
+h1 { margin: 4px 0 0; font-size: 40px; line-height: .95; font-weight: 800; font-stretch: 75%; }
+.state { font-size: 17px; color: var(--sand); margin: 0; }
+.state strong { color: var(--cream); }
+.block { background: var(--plum-2); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.block h2 { margin: 0; font-size: 19px; font-weight: 700; }
+.block p { margin: 0; font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 0; border-radius: 14px; min-height: 52px; padding: 0 16px; font-size: 17px; font-weight: 700; background: var(--plum-3); color: var(--cream); flex: 1 1 auto; }
+.btn:active { transform: scale(.98); }
+.btn[disabled] { opacity: .4; }
+.btn.pink { background: var(--pink); color: var(--plum); }
+.btn.purple { background: var(--purple); color: var(--plum); }
+.btn.yellow { background: var(--yellow); color: var(--plum); }
+.btn.danger { background: transparent; border: 2px solid var(--pink-deep); color: var(--pink); }
+.btn.armed { background: var(--pink-deep); color: var(--cream); border-color: var(--pink-deep); }
+.btn.on { outline: 3px solid var(--cream); outline-offset: 2px; }
+.count { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; }
+.count .n { font-size: 64px; line-height: 1; font-weight: 800; font-stretch: 75%; }
+.count .row .btn { min-width: 64px; flex: 0 0 auto; }
+input[type=text], input[type=number], input[type=time] { width: 100%; min-height: 52px; border-radius: 14px; border: 2px solid var(--plum-3); background: var(--plum); padding: 0 14px; font-size: 18px; }
+input:focus { border-color: var(--yellow); outline: none; }
+.field { display: flex; gap: 8px; }
+.field .btn { flex: 0 0 auto; }
+.presets .btn { font-size: 15px; min-height: 44px; font-weight: 600; }
+.links { font-size: 15px; color: var(--muted); display: flex; gap: 16px; flex-wrap: wrap; }
+.links a { color: var(--cream); font-weight: 700; }
+.toast { position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--cream); color: var(--plum); font-weight: 700; padding: 12px 18px; border-radius: 14px; font-size: 16px; max-width: calc(100vw - 32px); }
+.toast[hidden] { display: none; }
+.nokey { font-size: 18px; line-height: 1.45; color: var(--sand); }
 </style>
 </head>
-<body class="admin">
-<main>
-  <h1>Admin</h1>
-  <p>Keep this link private. Every button acts immediately.</p>
-  <div class="row">
-    <button class="primary" id="freeze" type="button">Freeze (last pancake)</button>
-    <button id="open" type="button">Reopen voting</button>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="logo"><svg role="img" aria-label="Pancake" viewBox="0 0 422 166" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M318.116 9.17733C322.015 3.82624 327.3 -0.212597 333.318 0.00867186C339.855 0.249222 344.109 5.2716 346.075 11.2001C348.052 17.1614 348.283 25.2018 346.541 34.8696C343.758 50.3187 335.749 70.9712 319.701 96.3398C320.064 98.657 320.466 101.023 320.906 103.439C323.782 97.805 327.283 93.7008 331.185 91.0009C339.115 85.514 348.228 86.3193 353.997 91.567C356.827 94.1415 358.729 97.7143 359.101 101.775C359.476 105.865 358.272 110.084 355.536 113.942C352.678 117.969 348.175 121.607 341.859 124.63C355.431 143.67 374.26 153.904 396.156 153.904V165.071C369.298 165.071 346.575 151.84 331.068 128.657C329.695 129.053 328.269 129.428 326.788 129.781C327.717 133.264 328.982 137.817 330.285 142.473C332.416 150.085 334.647 157.982 335.222 160.587L324.317 162.994C323.831 160.79 321.744 153.387 319.532 145.482C317.43 137.974 315.203 129.967 314.531 126.778C313.07 120.896 311.812 115.23 310.74 109.778C309.1 112.12 307.397 114.498 305.627 116.91L296.624 110.302C300.819 104.588 304.613 99.0974 308.038 93.8374C304.407 68.1372 305.246 47.9882 308.437 33.1118C310.658 22.7627 314.067 14.7339 318.116 9.17733ZM85.7208 82.9906C101.219 82.9906 110.174 90.4529 110.174 104.344V127.879C110.174 130.863 111.207 131.667 113.848 131.667H116.258V142.459H109.829C102.138 142.459 99.268 139.129 99.1531 133.504C95.2498 139.244 89.1651 143.147 79.9809 143.147C67.2379 143.147 58.3979 136.833 58.3978 125.927C58.3978 113.758 67.008 107.099 83.3099 107.099H97.8899V103.54C97.8899 96.9966 93.1831 92.9785 85.1469 92.9785C77.9144 92.9785 73.0926 96.4228 72.1742 101.589H59.8902C61.2678 90.2235 70.9113 82.9906 85.7208 82.9906ZM210.227 82.9906C225.266 82.9906 234.68 91.3715 236.976 104.689H224.003C222.396 97.8005 217.46 93.5525 209.997 93.5524C200.124 93.5524 193.58 101.703 193.58 113.184C193.58 124.664 200.124 132.586 209.997 132.586C217.345 132.586 222.396 128.223 223.888 121.449H236.976C234.795 134.766 224.807 143.147 209.883 143.147C192.203 143.147 180.952 131.552 180.952 113.184C180.952 95.045 192.547 82.9907 210.227 82.9906ZM267.979 82.9906C283.478 82.9906 292.432 90.4529 292.432 104.344V127.879C292.432 130.863 293.465 131.667 296.106 131.667H298.517V142.459H292.088C284.396 142.459 281.526 139.129 281.411 133.504C277.508 139.244 271.423 143.147 262.239 143.147C249.496 143.147 240.656 136.833 240.656 125.927C240.656 113.758 249.266 107.099 265.568 107.099H280.148V103.54C280.148 96.9966 275.441 92.9785 267.405 92.9785C260.173 92.9785 255.351 96.4228 254.432 101.589H242.148C243.526 90.2235 253.17 82.9906 267.979 82.9906ZM393.043 82.9906C410.034 82.9906 421.284 93.7821 421.629 111.002C421.629 112.265 421.514 114.217 421.285 115.939H377.43V116.513C377.775 126.501 383.974 133.044 393.617 133.045C400.964 133.045 406.59 129.256 408.197 122.713H420.596C418.53 134.308 408.771 143.147 394.306 143.147C375.938 143.147 364.457 131.208 364.457 113.184C364.458 95.0449 375.938 82.9906 393.043 82.9906ZM30.652 62.0968C47.2984 62.0968 58.3197 72.0844 58.3197 87.6976C58.3196 103.196 47.2984 113.298 30.652 113.298H13.202V142.459H0V62.0968H30.652ZM151.733 82.9906C164.246 82.9906 174.694 89.7641 174.694 108.936V142.459H162.18V110.084C162.18 99.637 157.703 93.8971 148.863 93.8971C139.564 93.8971 133.939 100.67 133.939 112.036V142.459H121.54V83.6794H132.332L133.709 91.3712C137.153 86.7792 142.664 82.9906 151.733 82.9906ZM82.736 116.283C75.1591 116.283 70.9115 119.154 70.9115 125.123C70.9117 130.06 75.0446 133.504 81.7031 133.504C91.8056 133.504 97.8899 127.419 97.8899 118.579V116.283H82.736ZM264.994 116.283C257.417 116.283 253.17 119.154 253.17 125.123C253.17 130.06 257.303 133.504 263.961 133.504C274.064 133.504 280.148 127.419 280.148 118.579V116.283H264.994ZM346.482 99.8277C344.864 98.3563 341.545 97.4116 337.539 100.184C334.149 102.529 330.057 107.801 327.246 118.134C338.482 115.011 344.066 110.809 346.428 107.48C347.813 105.528 348.084 103.921 347.981 102.796C347.875 101.642 347.345 100.613 346.482 99.8277ZM393.158 92.9785C385.466 92.9785 378.808 98.2594 377.889 106.64H408.771C407.738 97.9151 401.768 92.9786 393.158 92.9785ZM13.202 101.818H29.0447C38.6881 101.818 44.8873 96.3078 44.8874 87.6976C44.8874 78.9726 38.6882 73.5766 29.1596 73.5766H13.202V101.818ZM332.907 11.1678C332.368 11.1481 330.155 11.6174 327.142 15.7532C324.277 19.6844 321.357 26.1241 319.355 35.4541C317.06 46.1528 316.039 60.3509 317.516 78.2562C328.126 59.4285 333.509 44.2226 335.551 32.8898C337.108 24.2465 336.651 18.261 335.475 14.7148C334.292 11.1477 332.935 11.1683 332.907 11.1678Z" fill="currentColor"/> </svg></span>
+    <span class="conn" id="conn" data-state="wait">Connecting…</span>
+  </header>
+  <h1>Control room</h1>
+
+  <div id="app" hidden>
+    <div class="wrap" style="padding:0">
+      <p class="state" id="state"></p>
+
+      <section class="block">
+        <h2>Votes</h2>
+        <div class="row">
+          <button class="btn" data-act="open">Open votes</button>
+          <button class="btn yellow" data-act="freeze">Close votes</button>
+        </div>
+        <p>Close votes when the last pancake goes on.</p>
+      </section>
+
+      <section class="block">
+        <h2>Result</h2>
+        <p>Only after the adjudicator announces it. Tap twice to confirm.</p>
+        <div class="row">
+          <button class="btn pink" data-act="stood" data-confirm="Tap again: record broken">Record broken</button>
+          <button class="btn purple" data-act="fell" data-confirm="Tap again: not tonight">Not tonight</button>
+        </div>
+        <div class="field">
+          <input type="number" id="height" inputmode="decimal" step="0.1" min="0" max="500" placeholder="Height in cm">
+          <button class="btn" id="save-height">Save height</button>
+        </div>
+        <p id="height-in">Shown on the result screen, with inches.</p>
+      </section>
+
+      <section class="block">
+        <h2>Pancakes cooked</h2>
+        <div class="count">
+          <div class="n num" id="n-cooked">0</div>
+          <div class="row">
+            <button class="btn" data-bump="cooked" data-d="-1">−1</button>
+            <button class="btn" data-bump="cooked" data-d="1">+1</button>
+            <button class="btn yellow" data-bump="cooked" data-d="6">+6</button>
+          </div>
+        </div>
+        <p>+6 is one round on the six griddles.</p>
+      </section>
+
+      <section class="block">
+        <h2>In the stack</h2>
+        <div class="count">
+          <div class="n num" id="n-stacked">0</div>
+          <div class="row">
+            <button class="btn" data-bump="stacked" data-d="-1">−1</button>
+            <button class="btn" data-bump="stacked" data-d="1">+1</button>
+            <button class="btn yellow" data-bump="stacked" data-d="10">+10</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Message on the screen</h2>
+        <div class="field">
+          <input type="text" id="ticker" maxlength="140" placeholder="Short message">
+          <button class="btn yellow" id="save-ticker">Show</button>
+        </div>
+        <div class="row presets">
+          <button class="btn" data-preset="Last call for votes!">Last call for votes!</button>
+          <button class="btn" data-preset="Silence for the last 10 pancakes">Silence for the last 10</button>
+          <button class="btn" data-preset="Measuring now. Nobody breathe.">Measuring now</button>
+          <button class="btn" data-preset="Stack goes up in 5 minutes. Get your phones out.">Stack in 5 min</button>
+        </div>
+        <button class="btn" id="clear-ticker">Remove message</button>
+      </section>
+
+      <section class="block">
+        <h2>Stack time</h2>
+        <p>Drives the countdown on the screen. Thursday Oct 29, San Francisco time.</p>
+        <div class="field">
+          <input type="time" id="attempt">
+          <button class="btn" id="save-attempt">Save time</button>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Start over</h2>
+        <p>Deletes every vote and sets the counters, height and message back to zero. Use it after tests, never during the show.</p>
+        <button class="btn danger" data-act="reset" data-confirm="Tap again to delete everything">Delete all votes and counters</button>
+      </section>
+
+      <nav class="links">
+        <a href="./" target="_blank" rel="noopener">Vote page</a>
+        <a href="screen.html" target="_blank" rel="noopener">Room screen</a>
+      </nav>
+    </div>
   </div>
-  <div class="row">
-    <button id="stood" type="button">Result: RECORD BROKEN</button>
-    <button id="fell" type="button">Result: NOT BROKEN</button>
-  </div>
-  <div class="row">
-    <button class="warn" id="reset" type="button">Reset all votes</button>
-    <span></span>
-  </div>
-  <div class="state" id="state">Loading…</div>
-  <p class="err" id="err" role="status"></p>
-  <div class="links">
-    <a id="link-vote" href="index.html">Vote page</a> · <a id="link-screen" href="screen.html">Screen page</a>
-  </div>
-</main>
+
+  <p class="nokey" id="nokey" hidden>This page needs the full control-room link, the one that ends with <strong>?key=…</strong>. Ask Matthieu for it.</p>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
 <script>
-// Shared helpers for the "Will it stand?" pages.
-// The anon key is public by design: the tables are locked, only these functions are callable.
-const SB_RPC = 'https://sxmqxqflawenfkaadfqj.supabase.co/rest/v1/rpc/';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4bXF4cWZsYXdlbmZrYWFkZnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMzMzNzYsImV4cCI6MjEwODcwOTM3Nn0.OinWgfbvTIW6DWrEyM6gAlKPSCUfAPkFLTuozB2VYOs';
+var WIS = (function () {
+  var SB = 'https://sxmqxqflawenfkaadfqj.supabase.co';
+  var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4bXF4cWZsYXdlbmZrYWFkZnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMzMzNzYsImV4cCI6MjEwODcwOTM3Nn0.OinWgfbvTIW6DWrEyM6gAlKPSCUfAPkFLTuozB2VYOs';
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var skew = 0;
 
-async function rpc(fn, body) {
-  const r = await fetch(SB_RPC + fn, {
-    method: 'POST',
-    headers: {
-      apikey: SB_KEY,
-      Authorization: 'Bearer ' + SB_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body || {})
-  });
-  if (!r.ok) throw new Error(fn + ' failed: ' + r.status);
-  return r.json();
-}
-
-function odds(state) {
-  const yes = state.yes || 0, no = state.no || 0, total = yes + no;
-  const yesPct = total ? Math.round((yes / total) * 100) : 50;
-  return { yes, no, total, yesPct, noPct: 100 - yesPct };
-}
-
-function statusText(state, o) {
-  if (state.result === 'stood') return { big: 'RECORD BROKEN!', small: o.yesPct + '% of you called it.' };
-  if (state.result === 'fell') return { big: 'NOT TONIGHT.', small: o.noPct + '% of you called it.' };
-  if (state.status === 'frozen') return { big: 'Market closed', small: 'The last pancake is on. Final odds: ' + o.yesPct + '% YES.' };
-  return { big: 'Market open', small: 'Vote until the last pancake.' };
-}
-
-function votesLabel(n) {
-  return n === 1 ? '1 vote' : n + ' votes';
-}
-</script>
-<script>
-(function () {
-  var key = new URLSearchParams(location.search).get('key') || '';
-  var err = document.getElementById('err');
-  function show(s) {
-    var o = odds(s);
-    document.getElementById('state').innerHTML = '';
-    var lines = [
-      'Status: ' + s.status + (s.result ? ' · result: ' + s.result : ''),
-      'YES: ' + o.yes + ' · NO: ' + o.no + ' · total: ' + o.total,
-      'Odds shown: ' + o.yesPct + '% YES'
-    ];
-    lines.forEach(function (t) { var d = document.createElement('div'); d.textContent = t; document.getElementById('state').appendChild(d); });
+  function rpc(fn, args) {
+    return fetch(SB + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(args || {}),
+      cache: 'no-store'
+    }).then(function (r) {
+      if (r.ok) return r.json();
+      return r.json().catch(function () { return {}; }).then(function (e) {
+        throw new Error(e && e.message ? e.message : 'HTTP ' + r.status);
+      });
+    }).then(function (s) {
+      if (s && s.now) skew = Date.parse(s.now) - Date.now();
+      return s;
+    });
   }
-  function act(action) {
-    rpc('admin_set', { p_key: key, p_action: action })
-      .then(function (s) { err.textContent = ''; show(s); })
-      .catch(function () { err.textContent = 'Refused: check the key in the link.'; });
+
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    var b = new Uint8Array(16);
+    (window.crypto || {}).getRandomValues ? crypto.getRandomValues(b) : b.forEach(function (_, i) { b[i] = Math.random() * 256 | 0; });
+    b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    var h = Array.prototype.map.call(b, function (x) { return (x + 256).toString(16).slice(1); }).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
   }
-  ['freeze', 'open', 'stood', 'fell'].forEach(function (a) {
-    document.getElementById(a).addEventListener('click', function () { act(a); });
-  });
-  var resetBtn = document.getElementById('reset'), armed = false, timer = null;
-  resetBtn.addEventListener('click', function () {
-    if (!armed) {
-      armed = true; resetBtn.classList.add('armed'); resetBtn.textContent = 'Tap again to erase all votes';
-      timer = setTimeout(function () { armed = false; resetBtn.classList.remove('armed'); resetBtn.textContent = 'Reset all votes'; }, 4000);
-      return;
+
+  var memId = null;
+  function deviceId() {
+    try {
+      var id = localStorage.getItem('wis-device');
+      if (!id) { id = uuid(); localStorage.setItem('wis-device', id); }
+      return id;
+    } catch (e) {
+      if (!memId) memId = uuid();
+      return memId;
     }
-    clearTimeout(timer); armed = false; resetBtn.classList.remove('armed'); resetBtn.textContent = 'Reset all votes';
-    act('reset');
+  }
+
+  function split(s) {
+    var y = +s.yes || 0, n = +s.no || 0, t = y + n;
+    if (!t) return { total: 0, yes: 0, no: 0 };
+    var yp = Math.round(y * 100 / t);
+    return { total: t, yes: yp, no: 100 - yp };
+  }
+
+  function phase(s) {
+    if (s.result === 'stood') return 'stood';
+    if (s.result === 'fell') return 'fell';
+    if (s.status === 'frozen') return 'closed';
+    return 'open';
+  }
+
+  function serverNow() { return Date.now() + skew; }
+
+  function untilAttempt(s) {
+    if (!s.attempt_at) return null;
+    return Date.parse(s.attempt_at) - serverNow();
+  }
+
+  function clock(ms) {
+    var t = Math.max(0, Math.round(ms / 1000));
+    var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60;
+    var p = function (x) { return (x < 10 ? '0' : '') + x; };
+    return h ? h + ':' + p(m) + ':' + p(sec) : p(m) + ':' + p(sec);
+  }
+
+  function timeOfDay(iso) {
+    try {
+      return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' }).replace(' ', ' ').toLowerCase();
+    } catch (e) { return ''; }
+  }
+
+  function inches(cm) { return (Math.round(cm / 2.54 * 100) / 100).toFixed(2); }
+
+  // Draws a stack of pancakes whose size follows a percentage (one pancake per 4%).
+  function tower(el, pct, max) {
+    max = max || 25;
+    el.dataset.max = max;
+    var want = pct > 0 ? Math.max(1, Math.round(pct * max / 100)) : 0;
+    var have = el.querySelectorAll('.pc').length;
+    var first = !el.dataset.ready;
+    el.dataset.ready = '1';
+    if (!el.querySelector('.plate')) {
+      var plate = document.createElement('div');
+      plate.className = 'plate';
+      el.appendChild(plate);
+    }
+    while (have < want) {
+      var svg = document.createElementNS(SVGNS, 'svg');
+      svg.setAttribute('viewBox', '0 7 49 34');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('class', first ? 'pc' : 'pc drop');
+      var use = document.createElementNS(SVGNS, 'use');
+      use.setAttribute('href', '#pc-' + (1 + (have * 7 % 3)));
+      svg.appendChild(use);
+      svg.dataset.i = have;
+      el.appendChild(svg);
+      have++;
+    }
+    var pcs = el.querySelectorAll('.pc');
+    for (var i = pcs.length - 1; i >= want; i--) pcs[i].remove();
+    layout(el, max);
+  }
+
+  function layout(el, max) {
+    var W = el.clientWidth, H = el.clientHeight;
+    if (!W || !H) return;
+    var RISE = 0.24;
+    var h = Math.min(W * 0.8 * 34 / 49, (H - 6) / (1 + (max - 1) * RISE));
+    var w = h * 49 / 34;
+    var step = h * RISE;
+    var plate = el.querySelector('.plate');
+    if (plate) { plate.style.width = (w * 1.25) + 'px'; plate.style.left = ((W - w * 1.25) / 2) + 'px'; }
+    el.querySelectorAll('.pc').forEach(function (svg) {
+      var i = +svg.dataset.i;
+      var dx = [0, 0.035, -0.03, 0.02, -0.04, 0.03][i % 6] * W;
+      svg.style.width = w + 'px';
+      svg.style.height = h + 'px';
+      svg.style.left = ((W - w) / 2 + dx) + 'px';
+      svg.style.bottom = (2 + i * step) + 'px';
+    });
+  }
+
+  function relayout() {
+    document.querySelectorAll('.tower').forEach(function (t) { layout(t, +t.dataset.max || 25); });
+  }
+  window.addEventListener('resize', relayout);
+
+  function poll(fn, everyMs) {
+    var timer = null;
+    function tick() {
+      clearTimeout(timer);
+      Promise.resolve().then(fn).catch(function () {}).then(function () {
+        timer = setTimeout(tick, everyMs + Math.random() * 400);
+      });
+    }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+    tick();
+  }
+
+  function conn(el, ok) {
+    if (!el) return;
+    el.dataset.state = ok ? 'live' : 'down';
+    el.textContent = ok ? 'Live' : 'Reconnecting…';
+  }
+
+  return { rpc: rpc, deviceId: deviceId, split: split, phase: phase, untilAttempt: untilAttempt, clock: clock, timeOfDay: timeOfDay, inches: inches, tower: tower, poll: poll, conn: conn };
+})();
+
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var key = new URLSearchParams(location.search).get('key');
+  if (!key) { $('nokey').hidden = false; WIS.conn($('conn'), true); return; }
+  $('app').hidden = false;
+  var last = null;
+  var busy = false;
+
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.hidden = true; }, 2600);
+  }
+
+  function call(fn, args, done) {
+    busy = true;
+    args.p_key = key;
+    return WIS.rpc(fn, args).then(function (s) { busy = false; render(s); WIS.conn($('conn'), true); if (done) toast(done); })
+      .catch(function (e) {
+        busy = false;
+        toast(/not allowed/.test(e.message) ? 'Wrong control-room link. Ask Matthieu for the right one.' : 'Not saved: ' + e.message + '. Check the connection and try again.');
+      });
+  }
+
+  var labels = { open: 'Votes are open', closed: 'Votes are closed', stood: 'Result on screen: record broken', fell: 'Result on screen: not tonight' };
+
+  function render(s) {
+    last = s;
+    var ph = WIS.phase(s);
+    var sp = WIS.split(s);
+    $('state').innerHTML = '<strong>' + labels[ph] + '.</strong> ' + sp.total + ' votes, ' + (sp.total ? sp.yes + '% yes' : 'no votes yet') + '.';
+    $('n-cooked').textContent = s.cooked;
+    $('n-stacked').textContent = s.stacked;
+    document.querySelectorAll('[data-act]').forEach(function (b) {
+      var a = b.dataset.act;
+      b.classList.toggle('on', (a === 'open' && ph === 'open') || (a === 'freeze' && ph === 'closed') || (a === ph));
+    });
+    if (document.activeElement !== $('height') && s.final_height_cm) $('height').value = s.final_height_cm;
+    if (document.activeElement !== $('attempt') && s.attempt_at) {
+      try {
+        $('attempt').value = new Date(s.attempt_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Los_Angeles' });
+      } catch (e) {}
+    }
+    updateInches();
+  }
+
+  function arm(b, run) {
+    if (!b.dataset.confirm) return run();
+    if (b.classList.contains('armed')) { b.classList.remove('armed'); b.textContent = b.dataset.label; return run(); }
+    b.dataset.label = b.textContent;
+    b.classList.add('armed');
+    b.textContent = b.dataset.confirm;
+    setTimeout(function () { if (b.classList.contains('armed')) { b.classList.remove('armed'); b.textContent = b.dataset.label; } }, 4000);
+  }
+
+  var doneMsg = { open: 'Votes are open', freeze: 'Votes are closed', stood: 'Record broken is on the screen', fell: 'Not tonight is on the screen', reset: 'Everything is back to zero' };
+  document.querySelectorAll('[data-act]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      arm(b, function () { call('admin_set', { p_action: b.dataset.act }, doneMsg[b.dataset.act]); });
+    });
   });
-  function refresh() { rpc('market_state').then(show).catch(function () {}); }
-  refresh();
-  setInterval(refresh, 2000);
+  document.querySelectorAll('[data-bump]').forEach(function (b) {
+    b.addEventListener('click', function () { call('admin_bump', { p_field: b.dataset.bump, p_delta: +b.dataset.d }); });
+  });
+
+  function updateInches() {
+    var v = parseFloat($('height').value);
+    $('height-in').textContent = v > 0 ? v + ' cm = ' + WIS.inches(v) + ' in. ' + (v > 108.3 ? 'Above the record (108.3 cm).' : 'Not above the record (108.3 cm).') : 'Shown on the result screen, with inches.';
+  }
+  $('height').addEventListener('input', updateInches);
+  $('save-height').addEventListener('click', function () {
+    var v = $('height').value.trim();
+    if (v && !(parseFloat(v) > 0)) return toast('Type the height in cm, for example 112.4');
+    call('admin_update', { p_patch: { final_height_cm: v } }, v ? 'Height saved' : 'Height removed');
+  });
+
+  $('save-ticker').addEventListener('click', function () {
+    var v = $('ticker').value.trim();
+    if (!v) return toast('Type a message first');
+    call('admin_update', { p_patch: { ticker: v } }, 'Message is on the screen');
+  });
+  document.querySelectorAll('[data-preset]').forEach(function (b) {
+    b.addEventListener('click', function () { $('ticker').value = b.dataset.preset; call('admin_update', { p_patch: { ticker: b.dataset.preset } }, 'Message is on the screen'); });
+  });
+  $('clear-ticker').addEventListener('click', function () { $('ticker').value = ''; call('admin_update', { p_patch: { ticker: '' } }, 'Message removed'); });
+
+  $('save-attempt').addEventListener('click', function () {
+    var v = $('attempt').value;
+    if (!/^\d{2}:\d{2}$/.test(v)) return toast('Pick a time first');
+    call('admin_update', { p_patch: { attempt_at: '2026-10-29T' + v + ':00-07:00' } }, 'Stack time saved');
+  });
+
+  WIS.poll(function () {
+    if (busy) return;
+    return WIS.rpc('market_state').then(function (s) { render(s); WIS.conn($('conn'), true); }).catch(function (e) { WIS.conn($('conn'), false); throw e; });
+  }, 2000);
 })();
 </script>
 </body>

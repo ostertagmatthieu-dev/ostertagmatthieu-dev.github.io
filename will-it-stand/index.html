@@ -2,219 +2,451 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>Will the world record be broken?</title>
-<meta name="description" content="Vote: will tonight's pancake tower break the world record? Pancake × Corgi, Oct 29.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2C002A">
+<title>Will it stand? Pancake world record vote</title>
+<meta name="description" content="Tonight at Corgi Café, San Francisco: will our pancake stack beat the world record? Cast your vote.">
+<meta property="og:title" content="Will it stand?">
+<meta property="og:description" content="Pancake × Corgi Café, Oct 29: will our pancake stack beat the world record? Cast your vote.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232C002A'/%3E%3Cellipse cx='32' cy='44' rx='20' ry='7' fill='%23E33A6A'/%3E%3Cellipse cx='32' cy='41' rx='20' ry='6' fill='%23FF7AA0'/%3E%3Cellipse cx='32' cy='32' rx='18' ry='6' fill='%238D43FD'/%3E%3Cellipse cx='32' cy='29' rx='18' ry='5' fill='%23BA8BFF'/%3E%3Cellipse cx='32' cy='20' rx='16' ry='5' fill='%23F38F43'/%3E%3Cellipse cx='32' cy='18' rx='16' ry='4.5' fill='%23FFBD7A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --plum: #2a0f2e;
-  --plum-2: #4a1d4f;
-  --cream: #fff8ee;
-  --pink: #ff7ab6;
-  --violet: #8b5cf6;
-  --yellow: #ffd23f;
-  --ink-soft: #6b5468;
-  --line: #ead9e6;
+  --plum: #2C002A;
+  --plum-2: #3B0B38;
+  --plum-3: #4D1A49;
+  --cream: #FFFCF8;
+  --sand: #EFE4DC;
+  --muted: #BBA8AE;
+  --pink: #FF7AA0;
+  --pink-deep: #E33A6A;
+  --purple: #BA8BFF;
+  --purple-deep: #8D43FD;
+  --yellow: #FFBD7A;
+  --yellow-deep: #F38F43;
+  --font: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-body {
-  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: var(--cream);
-  color: var(--plum);
-  -webkit-font-smoothing: antialiased;
-}
-h1, .big { font-stretch: 80%; font-weight: 900; letter-spacing: -0.01em; line-height: 0.95; }
-button { font: inherit; cursor: pointer; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html, body { margin: 0; background: var(--plum); color: var(--cream); }
+body { font-family: var(--font); font-optical-sizing: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+.num { font-variant-numeric: tabular-nums; }
+.logo { display: inline-flex; color: var(--cream); text-decoration: none; }
+.logo svg { height: 26px; width: auto; display: block; }
+.conn { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.conn::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); }
+.conn[data-state="live"]::before { background: #7EE3A6; box-shadow: 0 0 0 4px rgba(126, 227, 166, .18); }
+.conn[data-state="down"]::before { background: var(--pink-deep); }
+.ticker { background: var(--yellow); color: var(--plum); font-weight: 700; }
+.ticker[hidden] { display: none; }
 
-/* ---------- Vote page (phones) ---------- */
-.vote main { max-width: 480px; margin: 0 auto; padding: 28px 18px 40px; }
-.kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet); }
-.vote h1 { font-size: 50px; margin: 10px 0 12px; }
-.lede { font-size: 17px; line-height: 1.4; color: var(--ink-soft); }
-.buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 26px 0 14px; }
-.choice {
-  border: 3px solid var(--plum); border-radius: 18px; padding: 22px 8px 18px;
-  background: #fff; color: var(--plum); font-size: 34px; font-weight: 900; font-stretch: 80%;
-  transition: transform 0.08s ease;
+/* Pancake towers */
+.tower { position: relative; }
+.tower .pc { position: absolute; display: block; overflow: visible; }
+.tower[data-color="pink"] { --pancake-color-back: var(--pink-deep); --pancake-color-front: var(--pink); }
+.tower[data-color="purple"] { --pancake-color-back: var(--purple-deep); --pancake-color-front: var(--purple); }
+.tower .plate { position: absolute; bottom: 0; height: 4px; border-radius: 4px; background: var(--sand); opacity: .9; }
+.tower .pc.drop { animation: pc-drop .45s cubic-bezier(.2, .9, .3, 1.15) both; }
+@keyframes pc-drop { from { transform: translateY(-60px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .tower .pc.drop { animation: none; }
 }
-.choice small { display: block; font-size: 14px; font-weight: 600; font-stretch: 100%; margin-top: 4px; }
-.choice:active { transform: scale(0.97); }
-.choice.yes.on { background: var(--yellow); }
-.choice.no.on { background: var(--pink); }
-.choice:disabled { opacity: 0.45; cursor: default; }
-.choice.on:disabled { opacity: 1; }
-.mine { min-height: 22px; font-size: 15px; font-weight: 700; text-align: center; }
-.bar { height: 18px; border-radius: 999px; background: var(--pink); overflow: hidden; margin: 18px 0 8px; }
-.bar > div { height: 100%; width: 50%; background: var(--yellow); transition: width 0.6s ease; }
-.odds { font-size: 16px; font-weight: 700; }
-.status-box { margin-top: 22px; padding: 16px; border-radius: 14px; background: var(--plum); color: var(--cream); }
-.status-box .big { font-size: 30px; }
-.status-box p { font-size: 15px; margin-top: 4px; opacity: 0.9; }
-.fine { font-size: 13px; color: var(--ink-soft); margin-top: 22px; line-height: 1.4; }
-.err { color: #b3261e; font-size: 13px; min-height: 18px; margin-top: 8px; }
 
-/* ---------- Screen page (projector, 16:9) ---------- */
-.screen { background: var(--plum); color: var(--cream); overflow: hidden; }
-.screen .wrap {
-  height: 100vh; display: grid; grid-template-columns: 1.6fr 1fr; gap: 4vw;
-  padding: 5vh 5vw; align-items: center;
-}
-.screen .kicker { color: var(--yellow); font-size: 1.6vw; }
-.screen h1 { font-size: 6vw; margin: 1vh 0 4vh; }
-.pcts { display: flex; justify-content: space-between; align-items: baseline; }
-.pct { font-weight: 900; font-stretch: 80%; font-size: 9vw; line-height: 0.9; }
-.pct.y { color: var(--yellow); }
-.pct.n { color: var(--pink); text-align: right; }
-.pct-label { font-size: 1.8vw; font-weight: 800; letter-spacing: 0.06em; }
-.screen .bar { height: 3.2vh; margin: 2.5vh 0 2vh; }
-.screen .count { font-size: 2vw; font-weight: 700; opacity: 0.85; }
-.screen .status-box { background: var(--plum-2); margin-top: 4vh; padding: 2.2vh 2vw; border-radius: 1.2vw; }
-.screen .status-box .big { font-size: 4vw; }
-.screen .status-box p { font-size: 1.8vw; }
-.qr-card { background: var(--cream); color: var(--plum); border-radius: 2vw; padding: 3vh 2vw; text-align: center; }
-.qr-card img { width: 100%; max-width: 30vw; aspect-ratio: 1; display: block; margin: 0 auto; }
-.qr-card .scan { font-size: 3vw; font-weight: 900; font-stretch: 80%; margin-top: 1.5vh; }
-.qr-card .url { font-size: 1.4vw; font-weight: 700; color: var(--violet); margin-top: 0.6vh; word-break: break-all; }
-.screen.done .status-box { background: var(--yellow); color: var(--plum); }
-.screen.done.fell .status-box { background: var(--pink); }
+body { min-height: 100vh; min-height: 100dvh; }
+.wrap { max-width: 520px; margin: 0 auto; padding: max(16px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 22px; }
+.top { display: flex; align-items: center; justify-content: space-between; padding-top: 4px; }
+h1 { margin: 6px 0 0; font-size: clamp(46px, 14.5vw, 72px); line-height: .9; font-weight: 800; font-stretch: 75%; letter-spacing: -.02em; text-wrap: balance; }
+.lede { margin: 0; font-size: 17px; line-height: 1.45; color: var(--sand); max-width: 34em; }
+.lede strong { color: var(--cream); font-weight: 700; }
+.ticker { border-radius: 14px; padding: 12px 16px; font-size: 17px; line-height: 1.3; }
 
-/* ---------- Admin page ---------- */
-.admin main { max-width: 520px; margin: 0 auto; padding: 24px 18px; }
-.admin h1 { font-size: 40px; margin-bottom: 8px; }
-.admin .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-.admin button { border: 2px solid var(--plum); border-radius: 12px; padding: 16px 10px; background: #fff; font-weight: 800; font-size: 17px; }
-.admin button.primary { background: var(--plum); color: var(--cream); }
-.admin button.warn { border-color: #b3261e; color: #b3261e; }
-.admin button.armed { background: #b3261e; color: #fff; }
-.admin .state { margin-top: 18px; padding: 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line); font-size: 16px; line-height: 1.5; }
-.admin .links { margin-top: 18px; font-size: 14px; line-height: 1.6; }
-.admin .links a { color: var(--violet); font-weight: 700; }
+.ballot { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.choice { position: relative; border: 0; border-radius: 22px; padding: 18px 16px 16px; min-height: 132px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; color: var(--plum); transition: transform .12s ease, box-shadow .2s ease, opacity .2s ease; }
+.choice:active { transform: scale(.97); }
+.choice.yes { background: var(--pink); box-shadow: inset 0 -6px 0 var(--pink-deep); }
+.choice.no { background: var(--purple); box-shadow: inset 0 -6px 0 var(--purple-deep); }
+.choice .big { font-size: 44px; line-height: .9; font-weight: 800; font-stretch: 75%; }
+.choice .small { font-size: 15px; line-height: 1.25; font-weight: 600; }
+.choice .tick { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: var(--plum); color: var(--cream); display: grid; place-items: center; opacity: 0; transform: scale(.6); transition: opacity .2s ease, transform .2s ease; }
+.choice[aria-pressed="true"] .tick { opacity: 1; transform: none; }
+.ballot[data-mine] .choice[aria-pressed="false"] { opacity: .45; }
+.choice:disabled { cursor: default; }
+.ballot[data-closed] .choice { opacity: .35; }
+.ballot[data-closed] .choice[aria-pressed="true"] { opacity: 1; }
+.note { margin: -8px 0 0; font-size: 15px; line-height: 1.4; color: var(--muted); min-height: 1.4em; }
+.note strong { color: var(--cream); }
+
+.room { background: var(--plum-2); border-radius: 26px; padding: 18px 18px 14px; }
+.room-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.room-head h2 { margin: 0; font-size: 19px; font-weight: 700; }
+.room-head span { font-size: 15px; color: var(--muted); }
+.duel { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px; align-items: end; }
+.side { display: flex; flex-direction: column; align-items: center; }
+.side .tower { width: 100%; height: 200px; }
+.side .pct { font-size: 40px; font-weight: 800; font-stretch: 75%; line-height: 1; margin-top: 10px; }
+.side .lab { font-size: 14px; color: var(--muted); margin-top: 2px; }
+.side.yes .pct { color: var(--pink); }
+.side.no .pct { color: var(--purple); }
+.empty { text-align: center; color: var(--muted); font-size: 15px; margin: 8px 0 0; }
+
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fact { border: 1.5px solid var(--plum-3); border-radius: 18px; padding: 12px 14px; }
+.fact b { display: block; font-size: 26px; font-weight: 800; font-stretch: 80%; line-height: 1.05; }
+.fact span { font-size: 13.5px; color: var(--muted); }
+
+.result { border-radius: 28px; padding: 24px 20px; color: var(--plum); text-align: left; }
+.result[hidden] { display: none; }
+.result.stood { background: var(--yellow); }
+.result.fell { background: var(--sand); }
+.result h2 { margin: 0; font-size: clamp(48px, 15vw, 76px); line-height: .88; font-weight: 800; font-stretch: 75%; letter-spacing: -.02em; }
+.result p { margin: 12px 0 0; font-size: 18px; line-height: 1.35; font-weight: 600; }
+.result p.you { font-weight: 800; }
+
+footer { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+footer a { color: var(--cream); font-weight: 700; text-underline-offset: 3px; }
 </style>
 </head>
-<body class="vote">
-<main>
-  <p class="kicker">Pancake × Corgi · Oct 29</p>
-  <h1>Will the world record be broken?</h1>
-  <p class="lede">Tonight we stack pancakes past 42.6 in (108.3 cm). No glue, no support. It has to stand on its own for 5 seconds.</p>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><symbol id="pc-1" viewBox="0 0 49 48">
+      <path d="M25.9537 40C33.3632 40 39.2879 36.4173 43.3461 32.7957C46.1317 30.3098 47.7828 27.1712 47.8255 23.6551C47.9308 14.9807 37.5877 8 24.9673 8C12.347 8 1.61512 14.1456 0.299682 23.6551C-0.498594 29.4254 3.49706 32.5575 8.00699 35.1278C12.4861 37.6806 19.7274 40 25.9537 40Z" fill="var(--pancake-color-back)"/>
+      <path d="M25.8326 32C32.779 32 38.3334 29.313 42.138 26.5968C44.7495 24.7324 46.2973 22.3784 46.3374 19.7413C46.4361 13.2355 36.7394 8 24.9078 8C13.0762 8 3.01515 12.6092 1.78193 19.7413C1.03355 24.0691 4.77947 26.4181 9.00753 28.3459C13.2067 30.2605 19.9955 32 25.8326 32Z" fill="var(--pancake-color-front)"/>
+    </symbol><symbol id="pc-2" viewBox="0 0 49 48">
+      <path d="M23.3732 40C30.7944 40 39.2741 35.7757 43.3388 32.2359C46.1288 29.8061 47.7824 26.7383 47.8252 23.3016C47.9307 14.823 37.5712 7.99999 24.9309 7.99999C19.1594 7.99999 13.8531 9.66747 9.58799 11.9133C4.51202 14.586 0.22433 17.64 0.22433 23.3016C0.224371 32.4569 11.3407 40 23.3732 40Z" fill="var(--pancake-color-back)"/>
+      <path d="M23.4134 32C30.3708 32 38.3204 28.8318 42.1311 26.1769C44.7467 24.3546 46.297 22.0538 46.3371 19.4762C46.436 13.1173 36.724 8 24.8737 8C19.4629 8 14.4883 9.25061 10.4897 10.935C5.731 12.9395 1.71129 15.23 1.71129 19.4762C1.71132 26.3426 12.1329 32 23.4134 32Z" fill="var(--pancake-color-front)"/>
+    </symbol><symbol id="pc-3" viewBox="0 0 49 48">
+      <path d="M22.1641 38.9443C26.9826 38.9443 34.4976 39.0344 39.1644 36.6109C44.865 33.6506 47.7578 28.8028 47.8114 24.4715C47.9169 15.9503 38.4229 8.00005 25.7862 8.00005C20.0163 8.00005 13.4283 9.0205 9.16443 11.2776C4.0899 13.9638 0.223995 17.5276 0.223995 23.2177C0.224036 32.419 7.58283 38.9443 22.1641 38.9443Z" fill="var(--pancake-color-back)"/>
+      <path d="M22.2796 31.2082C26.797 31.2082 33.8423 31.2758 38.2174 29.4582C43.5618 27.2379 46.2737 23.602 46.324 20.3536C46.4229 13.9627 37.5223 8.00001 25.6754 8.00001C20.2661 8.00001 14.0899 8.76534 10.0924 10.4582C5.33507 12.4728 1.71079 15.1457 1.71079 19.4132C1.71083 26.3142 8.60969 31.2082 22.2796 31.2082Z" fill="var(--pancake-color-front)"/>
+    </symbol></svg>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="https://pancake.ai/?utm_source=pancake_tower&amp;utm_medium=vote" aria-label="Pancake"><svg role="img" aria-label="Pancake" viewBox="0 0 422 166" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M318.116 9.17733C322.015 3.82624 327.3 -0.212597 333.318 0.00867186C339.855 0.249222 344.109 5.2716 346.075 11.2001C348.052 17.1614 348.283 25.2018 346.541 34.8696C343.758 50.3187 335.749 70.9712 319.701 96.3398C320.064 98.657 320.466 101.023 320.906 103.439C323.782 97.805 327.283 93.7008 331.185 91.0009C339.115 85.514 348.228 86.3193 353.997 91.567C356.827 94.1415 358.729 97.7143 359.101 101.775C359.476 105.865 358.272 110.084 355.536 113.942C352.678 117.969 348.175 121.607 341.859 124.63C355.431 143.67 374.26 153.904 396.156 153.904V165.071C369.298 165.071 346.575 151.84 331.068 128.657C329.695 129.053 328.269 129.428 326.788 129.781C327.717 133.264 328.982 137.817 330.285 142.473C332.416 150.085 334.647 157.982 335.222 160.587L324.317 162.994C323.831 160.79 321.744 153.387 319.532 145.482C317.43 137.974 315.203 129.967 314.531 126.778C313.07 120.896 311.812 115.23 310.74 109.778C309.1 112.12 307.397 114.498 305.627 116.91L296.624 110.302C300.819 104.588 304.613 99.0974 308.038 93.8374C304.407 68.1372 305.246 47.9882 308.437 33.1118C310.658 22.7627 314.067 14.7339 318.116 9.17733ZM85.7208 82.9906C101.219 82.9906 110.174 90.4529 110.174 104.344V127.879C110.174 130.863 111.207 131.667 113.848 131.667H116.258V142.459H109.829C102.138 142.459 99.268 139.129 99.1531 133.504C95.2498 139.244 89.1651 143.147 79.9809 143.147C67.2379 143.147 58.3979 136.833 58.3978 125.927C58.3978 113.758 67.008 107.099 83.3099 107.099H97.8899V103.54C97.8899 96.9966 93.1831 92.9785 85.1469 92.9785C77.9144 92.9785 73.0926 96.4228 72.1742 101.589H59.8902C61.2678 90.2235 70.9113 82.9906 85.7208 82.9906ZM210.227 82.9906C225.266 82.9906 234.68 91.3715 236.976 104.689H224.003C222.396 97.8005 217.46 93.5525 209.997 93.5524C200.124 93.5524 193.58 101.703 193.58 113.184C193.58 124.664 200.124 132.586 209.997 132.586C217.345 132.586 222.396 128.223 223.888 121.449H236.976C234.795 134.766 224.807 143.147 209.883 143.147C192.203 143.147 180.952 131.552 180.952 113.184C180.952 95.045 192.547 82.9907 210.227 82.9906ZM267.979 82.9906C283.478 82.9906 292.432 90.4529 292.432 104.344V127.879C292.432 130.863 293.465 131.667 296.106 131.667H298.517V142.459H292.088C284.396 142.459 281.526 139.129 281.411 133.504C277.508 139.244 271.423 143.147 262.239 143.147C249.496 143.147 240.656 136.833 240.656 125.927C240.656 113.758 249.266 107.099 265.568 107.099H280.148V103.54C280.148 96.9966 275.441 92.9785 267.405 92.9785C260.173 92.9785 255.351 96.4228 254.432 101.589H242.148C243.526 90.2235 253.17 82.9906 267.979 82.9906ZM393.043 82.9906C410.034 82.9906 421.284 93.7821 421.629 111.002C421.629 112.265 421.514 114.217 421.285 115.939H377.43V116.513C377.775 126.501 383.974 133.044 393.617 133.045C400.964 133.045 406.59 129.256 408.197 122.713H420.596C418.53 134.308 408.771 143.147 394.306 143.147C375.938 143.147 364.457 131.208 364.457 113.184C364.458 95.0449 375.938 82.9906 393.043 82.9906ZM30.652 62.0968C47.2984 62.0968 58.3197 72.0844 58.3197 87.6976C58.3196 103.196 47.2984 113.298 30.652 113.298H13.202V142.459H0V62.0968H30.652ZM151.733 82.9906C164.246 82.9906 174.694 89.7641 174.694 108.936V142.459H162.18V110.084C162.18 99.637 157.703 93.8971 148.863 93.8971C139.564 93.8971 133.939 100.67 133.939 112.036V142.459H121.54V83.6794H132.332L133.709 91.3712C137.153 86.7792 142.664 82.9906 151.733 82.9906ZM82.736 116.283C75.1591 116.283 70.9115 119.154 70.9115 125.123C70.9117 130.06 75.0446 133.504 81.7031 133.504C91.8056 133.504 97.8899 127.419 97.8899 118.579V116.283H82.736ZM264.994 116.283C257.417 116.283 253.17 119.154 253.17 125.123C253.17 130.06 257.303 133.504 263.961 133.504C274.064 133.504 280.148 127.419 280.148 118.579V116.283H264.994ZM346.482 99.8277C344.864 98.3563 341.545 97.4116 337.539 100.184C334.149 102.529 330.057 107.801 327.246 118.134C338.482 115.011 344.066 110.809 346.428 107.48C347.813 105.528 348.084 103.921 347.981 102.796C347.875 101.642 347.345 100.613 346.482 99.8277ZM393.158 92.9785C385.466 92.9785 378.808 98.2594 377.889 106.64H408.771C407.738 97.9151 401.768 92.9786 393.158 92.9785ZM13.202 101.818H29.0447C38.6881 101.818 44.8873 96.3078 44.8874 87.6976C44.8874 78.9726 38.6882 73.5766 29.1596 73.5766H13.202V101.818ZM332.907 11.1678C332.368 11.1481 330.155 11.6174 327.142 15.7532C324.277 19.6844 321.357 26.1241 319.355 35.4541C317.06 46.1528 316.039 60.3509 317.516 78.2562C328.126 59.4285 333.509 44.2226 335.551 32.8898C337.108 24.2465 336.651 18.261 335.475 14.7148C334.292 11.1477 332.935 11.1683 332.907 11.1678Z" fill="currentColor"/> </svg></a>
+    <span class="conn" id="conn" data-state="wait">Connecting…</span>
+  </header>
 
-  <div class="buttons">
-    <button class="choice yes" id="btn-yes" type="button">YES<small>record broken</small></button>
-    <button class="choice no" id="btn-no" type="button">NO<small>not tonight</small></button>
+  <section id="result" class="result" hidden aria-live="polite">
+    <h2 id="r-title"></h2>
+    <p id="r-line"></p>
+    <p id="r-you" class="you"></p>
+  </section>
+
+  <section>
+    <h1>Will the world record be broken?</h1>
+  </section>
+  <p class="lede">Tonight we stack pancakes higher than <strong>42.64&nbsp;in (108.3&nbsp;cm)</strong> and keep them standing for 5 seconds. The record to beat: 230 pancakes, Sydney, 2025.</p>
+
+  <div class="ticker" id="ticker" role="status" hidden></div>
+
+  <div class="ballot" id="ballot">
+    <button class="choice yes" data-choice="yes" aria-pressed="false">
+      <span class="tick" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="big">Yes</span>
+      <span class="small">We break it tonight</span>
+    </button>
+    <button class="choice no" data-choice="no" aria-pressed="false">
+      <span class="tick" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="big">No</span>
+      <span class="small">Sydney keeps it</span>
+    </button>
   </div>
-  <p class="mine" id="mine"></p>
+  <p class="note" id="note" aria-live="polite">One tap. You can change your mind until the last pancake.</p>
 
-  <div class="bar" aria-hidden="true"><div id="yesbar"></div></div>
-  <p class="odds" id="odds">Loading the odds…</p>
+  <section class="room" aria-labelledby="room-title">
+    <div class="room-head">
+      <h2 id="room-title">The room so far</h2>
+      <span id="total" class="num">0 votes</span>
+    </div>
+    <div class="duel">
+      <div class="side yes">
+        <div class="tower" id="t-yes" data-color="pink" aria-hidden="true"></div>
+        <div class="pct num" id="p-yes">0%</div>
+        <div class="lab">say we break it</div>
+      </div>
+      <div class="side no">
+        <div class="tower" id="t-no" data-color="purple" aria-hidden="true"></div>
+        <div class="pct num" id="p-no">0%</div>
+        <div class="lab">say Sydney keeps it</div>
+      </div>
+    </div>
+    <p class="empty" id="empty">No votes yet. Be the first.</p>
+  </section>
 
-  <div class="status-box">
-    <div class="big" id="status-big">Market open</div>
-    <p id="status-small">Vote until the last pancake.</p>
-  </div>
+  <section class="facts" aria-label="Tonight">
+    <div class="fact"><b class="num" id="f-time">7:25 pm</b><span id="f-time-lab">the stack goes up</span></div>
+    <div class="fact"><b class="num" id="f-count">0</b><span id="f-count-lab">pancakes cooked so far</span></div>
+  </section>
 
-  <p class="err" id="err" role="status"></p>
-  <p class="fine">No money, just bragging rights. One vote per phone. You can change it until the last pancake is on the tower.</p>
-</main>
+  <footer>
+    Pancake × Corgi Café, 9 Claude Lane, San Francisco. Votes are anonymous, no money involved.<br>
+    <a href="https://pancake.ai/?utm_source=pancake_tower&amp;utm_medium=vote_footer">What is Pancake?</a>
+  </footer>
+</div>
 <script>
-// Shared helpers for the "Will it stand?" pages.
-// The anon key is public by design: the tables are locked, only these functions are callable.
-const SB_RPC = 'https://sxmqxqflawenfkaadfqj.supabase.co/rest/v1/rpc/';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4bXF4cWZsYXdlbmZrYWFkZnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMzMzNzYsImV4cCI6MjEwODcwOTM3Nn0.OinWgfbvTIW6DWrEyM6gAlKPSCUfAPkFLTuozB2VYOs';
+var WIS = (function () {
+  var SB = 'https://sxmqxqflawenfkaadfqj.supabase.co';
+  var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4bXF4cWZsYXdlbmZrYWFkZnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMzMzNzYsImV4cCI6MjEwODcwOTM3Nn0.OinWgfbvTIW6DWrEyM6gAlKPSCUfAPkFLTuozB2VYOs';
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var skew = 0;
 
-async function rpc(fn, body) {
-  const r = await fetch(SB_RPC + fn, {
-    method: 'POST',
-    headers: {
-      apikey: SB_KEY,
-      Authorization: 'Bearer ' + SB_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body || {})
-  });
-  if (!r.ok) throw new Error(fn + ' failed: ' + r.status);
-  return r.json();
-}
-
-function odds(state) {
-  const yes = state.yes || 0, no = state.no || 0, total = yes + no;
-  const yesPct = total ? Math.round((yes / total) * 100) : 50;
-  return { yes, no, total, yesPct, noPct: 100 - yesPct };
-}
-
-function statusText(state, o) {
-  if (state.result === 'stood') return { big: 'RECORD BROKEN!', small: o.yesPct + '% of you called it.' };
-  if (state.result === 'fell') return { big: 'NOT TONIGHT.', small: o.noPct + '% of you called it.' };
-  if (state.status === 'frozen') return { big: 'Market closed', small: 'The last pancake is on. Final odds: ' + o.yesPct + '% YES.' };
-  return { big: 'Market open', small: 'Vote until the last pancake.' };
-}
-
-function votesLabel(n) {
-  return n === 1 ? '1 vote' : n + ' votes';
-}
-</script>
-<script>
-(function () {
-  var STORE = 'wis-device', MINE = 'wis-choice';
-  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-  function uuid() {
-    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+  function rpc(fn, args) {
+    return fetch(SB + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(args || {}),
+      cache: 'no-store'
+    }).then(function (r) {
+      if (r.ok) return r.json();
+      return r.json().catch(function () { return {}; }).then(function (e) {
+        throw new Error(e && e.message ? e.message : 'HTTP ' + r.status);
+      });
+    }).then(function (s) {
+      if (s && s.now) skew = Date.parse(s.now) - Date.now();
+      return s;
     });
   }
-  var device = load(STORE);
-  if (!device) { device = uuid(); save(STORE, device); }
-  var mine = load(MINE);
-  var state = null, busy = false;
 
-  var yesBtn = document.getElementById('btn-yes');
-  var noBtn = document.getElementById('btn-no');
-  var err = document.getElementById('err');
-
-  function render() {
-    if (!state) return;
-    var o = odds(state), s = statusText(state, o), open = state.status === 'open';
-    document.getElementById('yesbar').style.width = o.yesPct + '%';
-    document.getElementById('odds').textContent = o.total
-      ? o.yesPct + '% YES · ' + o.noPct + '% NO · ' + votesLabel(o.total)
-      : 'No votes yet. Be the first.';
-    document.getElementById('status-big').textContent = s.big;
-    document.getElementById('status-small').textContent = s.small;
-    yesBtn.classList.toggle('on', mine === 'yes');
-    noBtn.classList.toggle('on', mine === 'no');
-    yesBtn.disabled = noBtn.disabled = !open || busy;
-    document.getElementById('mine').textContent = mine
-      ? 'Your vote: ' + (mine === 'yes' ? 'YES, record broken' : 'NO, not tonight') + (open ? '' : ' (locked)')
-      : (open ? 'Tap to vote.' : 'Voting is closed.');
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    var b = new Uint8Array(16);
+    (window.crypto || {}).getRandomValues ? crypto.getRandomValues(b) : b.forEach(function (_, i) { b[i] = Math.random() * 256 | 0; });
+    b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    var h = Array.prototype.map.call(b, function (x) { return (x + 256).toString(16).slice(1); }).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
   }
 
-  function refresh() {
-    return rpc('market_state').then(function (s) { state = s; err.textContent = ''; render(); })
-      .catch(function () { err.textContent = 'Connection is slow, retrying…'; });
+  var memId = null;
+  function deviceId() {
+    try {
+      var id = localStorage.getItem('wis-device');
+      if (!id) { id = uuid(); localStorage.setItem('wis-device', id); }
+      return id;
+    } catch (e) {
+      if (!memId) memId = uuid();
+      return memId;
+    }
   }
 
-  function vote(choice) {
-    if (busy || !state || state.status !== 'open') return;
-    busy = true; mine = choice; save(MINE, choice); render();
-    rpc('cast_vote', { p_device: device, p_choice: choice })
-      .then(function (s) { state = s; err.textContent = ''; })
-      .catch(function () { err.textContent = 'Vote not saved, tap again.'; })
-      .then(function () { busy = false; render(); });
+  function split(s) {
+    var y = +s.yes || 0, n = +s.no || 0, t = y + n;
+    if (!t) return { total: 0, yes: 0, no: 0 };
+    var yp = Math.round(y * 100 / t);
+    return { total: t, yes: yp, no: 100 - yp };
   }
 
-  yesBtn.addEventListener('click', function () { vote('yes'); });
-  noBtn.addEventListener('click', function () { vote('no'); });
+  function phase(s) {
+    if (s.result === 'stood') return 'stood';
+    if (s.result === 'fell') return 'fell';
+    if (s.status === 'frozen') return 'closed';
+    return 'open';
+  }
 
-  rpc('my_vote', { p_device: device }).then(function (c) {
-    if (c === 'yes' || c === 'no') { mine = c; save(MINE, c); render(); }
-  }).catch(function () {});
-  refresh();
-  setInterval(refresh, 3000);
+  function serverNow() { return Date.now() + skew; }
+
+  function untilAttempt(s) {
+    if (!s.attempt_at) return null;
+    return Date.parse(s.attempt_at) - serverNow();
+  }
+
+  function clock(ms) {
+    var t = Math.max(0, Math.round(ms / 1000));
+    var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60;
+    var p = function (x) { return (x < 10 ? '0' : '') + x; };
+    return h ? h + ':' + p(m) + ':' + p(sec) : p(m) + ':' + p(sec);
+  }
+
+  function timeOfDay(iso) {
+    try {
+      return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' }).replace(' ', ' ').toLowerCase();
+    } catch (e) { return ''; }
+  }
+
+  function inches(cm) { return (Math.round(cm / 2.54 * 100) / 100).toFixed(2); }
+
+  // Draws a stack of pancakes whose size follows a percentage (one pancake per 4%).
+  function tower(el, pct, max) {
+    max = max || 25;
+    el.dataset.max = max;
+    var want = pct > 0 ? Math.max(1, Math.round(pct * max / 100)) : 0;
+    var have = el.querySelectorAll('.pc').length;
+    var first = !el.dataset.ready;
+    el.dataset.ready = '1';
+    if (!el.querySelector('.plate')) {
+      var plate = document.createElement('div');
+      plate.className = 'plate';
+      el.appendChild(plate);
+    }
+    while (have < want) {
+      var svg = document.createElementNS(SVGNS, 'svg');
+      svg.setAttribute('viewBox', '0 7 49 34');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('class', first ? 'pc' : 'pc drop');
+      var use = document.createElementNS(SVGNS, 'use');
+      use.setAttribute('href', '#pc-' + (1 + (have * 7 % 3)));
+      svg.appendChild(use);
+      svg.dataset.i = have;
+      el.appendChild(svg);
+      have++;
+    }
+    var pcs = el.querySelectorAll('.pc');
+    for (var i = pcs.length - 1; i >= want; i--) pcs[i].remove();
+    layout(el, max);
+  }
+
+  function layout(el, max) {
+    var W = el.clientWidth, H = el.clientHeight;
+    if (!W || !H) return;
+    var RISE = 0.24;
+    var h = Math.min(W * 0.8 * 34 / 49, (H - 6) / (1 + (max - 1) * RISE));
+    var w = h * 49 / 34;
+    var step = h * RISE;
+    var plate = el.querySelector('.plate');
+    if (plate) { plate.style.width = (w * 1.25) + 'px'; plate.style.left = ((W - w * 1.25) / 2) + 'px'; }
+    el.querySelectorAll('.pc').forEach(function (svg) {
+      var i = +svg.dataset.i;
+      var dx = [0, 0.035, -0.03, 0.02, -0.04, 0.03][i % 6] * W;
+      svg.style.width = w + 'px';
+      svg.style.height = h + 'px';
+      svg.style.left = ((W - w) / 2 + dx) + 'px';
+      svg.style.bottom = (2 + i * step) + 'px';
+    });
+  }
+
+  function relayout() {
+    document.querySelectorAll('.tower').forEach(function (t) { layout(t, +t.dataset.max || 25); });
+  }
+  window.addEventListener('resize', relayout);
+
+  function poll(fn, everyMs) {
+    var timer = null;
+    function tick() {
+      clearTimeout(timer);
+      Promise.resolve().then(fn).catch(function () {}).then(function () {
+        timer = setTimeout(tick, everyMs + Math.random() * 400);
+      });
+    }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+    tick();
+  }
+
+  function conn(el, ok) {
+    if (!el) return;
+    el.dataset.state = ok ? 'live' : 'down';
+    el.textContent = ok ? 'Live' : 'Reconnecting…';
+  }
+
+  return { rpc: rpc, deviceId: deviceId, split: split, phase: phase, untilAttempt: untilAttempt, clock: clock, timeOfDay: timeOfDay, inches: inches, tower: tower, poll: poll, conn: conn };
+})();
+
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var device = WIS.deviceId();
+  var mine = null;
+  var last = null;
+  var sending = false;
+
+  var buttons = document.querySelectorAll('.choice');
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!last || WIS.phase(last) !== 'open' || sending) return;
+      var choice = b.dataset.choice;
+      var prev = mine;
+      mine = choice;
+      paintChoice();
+      sending = true;
+      WIS.rpc('cast_vote', { p_device: device, p_choice: choice }).then(function (s) {
+        sending = false;
+        if (WIS.phase(s) !== 'open') { mine = prev; }
+        render(s);
+        WIS.conn($('conn'), true);
+      }).catch(function () {
+        sending = false;
+        mine = prev;
+        paintChoice();
+        $('note').textContent = 'Your vote did not go through. Check your connection and tap again.';
+        WIS.conn($('conn'), false);
+      });
+    });
+  });
+
+  function paintChoice() {
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.choice === mine)); });
+    if (mine) $('ballot').dataset.mine = mine; else delete $('ballot').dataset.mine;
+  }
+
+  function render(s) {
+    last = s;
+    var ph = WIS.phase(s);
+    var sp = WIS.split(s);
+
+    // ballot
+    var closed = ph !== 'open';
+    buttons.forEach(function (b) { b.disabled = closed; });
+    if (closed) $('ballot').dataset.closed = ''; else delete $('ballot').dataset.closed;
+    paintChoice();
+    var note;
+    if (ph === 'open') {
+      note = mine ? 'You said <strong>' + (mine === 'yes' ? 'yes' : 'no') + '</strong>. You can change your mind until the last pancake.' : 'One tap. You can change your mind until the last pancake.';
+    } else if (ph === 'closed') {
+      note = 'Votes are closed. Eyes on the stack.';
+    } else {
+      note = 'Votes are closed.';
+    }
+    $('note').innerHTML = note;
+
+    // odds
+    $('total').textContent = sp.total + (sp.total === 1 ? ' vote' : ' votes');
+    $('p-yes').textContent = (sp.total ? sp.yes : 0) + '%';
+    $('p-no').textContent = (sp.total ? sp.no : 0) + '%';
+    $('empty').hidden = sp.total > 0;
+    WIS.tower($("t-yes"), sp.total ? sp.yes : 0, 16);
+    WIS.tower($('t-no'), sp.total ? sp.no : 0, 16);
+
+    // ticker
+    if (s.ticker) { $('ticker').textContent = s.ticker; $('ticker').hidden = false; } else { $('ticker').hidden = true; }
+
+    // facts
+    var until = WIS.untilAttempt(s);
+    if (ph === 'stood' || ph === 'fell') {
+      $('f-time').textContent = s.stacked || '–';
+      $('f-time-lab').textContent = 'pancakes in the stack';
+    } else if (s.stacked > 0 || (until !== null && until <= 0)) {
+      $('f-time').textContent = s.stacked || '0';
+      $('f-time-lab').textContent = 'pancakes in the stack';
+    } else {
+      $('f-time').textContent = s.attempt_at ? WIS.timeOfDay(s.attempt_at) : 'Tonight';
+      $('f-time-lab').textContent = 'the stack goes up';
+    }
+    $('f-count').textContent = s.cooked;
+
+    // result
+    var r = $('result');
+    if (ph === 'stood' || ph === 'fell') {
+      r.hidden = false;
+      r.className = 'result ' + ph;
+      var h = s.final_height_cm;
+      if (ph === 'stood') {
+        $('r-title').textContent = 'Record broken!';
+        $('r-line').textContent = (h ? h + ' cm (' + WIS.inches(h) + ' in). ' : '') + (sp.total ? sp.yes + '% of the room called it.' : '');
+        $('r-you').textContent = mine === 'yes' ? 'You called it.' : mine === 'no' ? 'You doubted us. Have a pancake anyway.' : '';
+      } else {
+        $('r-title').textContent = 'Not tonight.';
+        $('r-line').textContent = 'Sydney keeps the record.' + (sp.total ? ' ' + sp.no + '% of the room saw it coming.' : '');
+        $('r-you').textContent = mine === 'no' ? 'You called it.' : mine === 'yes' ? 'Thanks for believing in us.' : '';
+      }
+    } else {
+      r.hidden = true;
+    }
+  }
+
+  WIS.rpc('my_vote', { p_device: device }).then(function (v) { if (v === 'yes' || v === 'no') { mine = v; paintChoice(); } }).catch(function () {});
+  WIS.poll(function () {
+    return WIS.rpc('market_state').then(function (s) { if (!sending) render(s); WIS.conn($('conn'), true); }).catch(function (e) { WIS.conn($('conn'), false); throw e; });
+  }, 3000);
 })();
 </script>
 </body>
