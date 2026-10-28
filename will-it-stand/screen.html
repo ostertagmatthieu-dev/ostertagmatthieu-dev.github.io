@@ -160,7 +160,7 @@ h1 { margin: 0; font-size: 5.6vw; line-height: .88; font-weight: 800; font-stret
   </aside>
 
   <footer class="strip">
-    <div class="stat"><b class="num" id="s-votes">0</b><span>votes</span></div>
+    <div class="stat"><b class="num" id="s-votes">0</b><span id="s-votes-lab">votes</span></div>
     <div class="stat"><b class="num" id="s-cooked">0</b><span>pancakes cooked</span></div>
     <div class="stat" id="stat-stacked"><b class="num" id="s-stacked">0</b><span>in the stack</span></div>
     <div class="hint" id="hint">Press F for full screen</div>
@@ -369,6 +369,7 @@ var WIS = (function () {
     WIS.tower($('t-no'), sp.total ? sp.no : 0, 25);
 
     $('s-votes').textContent = sp.total;
+    $('s-votes-lab').textContent = sp.total === 1 ? 'vote' : 'votes';
     $('s-cooked').textContent = s.cooked;
     $('s-stacked').textContent = s.stacked;
 
