@@ -7,6 +7,7 @@ The page exists in English (default), French (`?lang=fr`) and German (`?lang=de`
 ## Research
 
 - [World Models for Cross-Machine CNC Transfer under Partial Sensor Overlap](https://ostertagmatthieu-dev.github.io/saac-jepa/): A. L. Bouaziz, M. Ostertag, A. Demasles, arXiv:2609.16071, 2026. A command-conditioned JEPA world model trained on a CNC machine with 17 sensors, locked on source data, and evaluated once, zero-shot, on a machine that shares only 10 of them. Project page with its own [llms.txt](https://ostertagmatthieu-dev.github.io/saac-jepa/llms.txt).
+- Poster at the [BMVA Symposium on World Models](https://www.bmva.org/meetings/26-11-18-WorldModels.html), British Computer Society, London, November 18, 2026 (afternoon poster session).
 - [Code](https://github.com/ostertagmatthieu-dev/saac-jepa) · [arXiv](https://arxiv.org/abs/2609.16071) · [Demo](https://huggingface.co/spaces/mostertag/saac-jepa-world-model)
 
 ## Community
